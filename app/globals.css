@@ -132,6 +132,64 @@
   .section-lead {
     @apply mt-4 max-w-md text-pretty text-[0.9375rem] leading-[1.7] text-slate-500 dark:text-slate-400;
   }
+
+  /* Blog: in-article links — growing underline, keeps focus on reading */
+  .blog-prose.prose :where(a):not(:where(pre, pre *)) {
+    text-decoration: none;
+    text-underline-offset: 0.18em;
+    background-image: linear-gradient(currentColor, currentColor);
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    background-size: 0% 1px;
+    transition: background-size 0.38s ease;
+  }
+
+  .blog-prose.prose :where(a):not(:where(pre, pre *)):hover {
+    background-size: 100% 1px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .blog-prose.prose :where(a):not(:where(pre, pre *)) {
+      transition: none;
+      background: none;
+      text-decoration: underline;
+      text-decoration-color: color-mix(in oklab, currentColor 35%, transparent);
+      text-underline-offset: 0.2em;
+    }
+
+    .blog-prose.prose :where(a):not(:where(pre, pre *)):hover {
+      text-decoration-color: currentColor;
+    }
+  }
+
+  /* Post chrome: “All posts” back link */
+  .blog-nav-link {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    background-size: 0% 1px;
+    transition:
+      background-size 0.35s ease,
+      color 0.2s ease;
+    padding-bottom: 2px;
+  }
+
+  .blog-nav-link:hover {
+    background-size: 100% 1px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .blog-nav-link {
+      transition: color 0.2s ease;
+      background: none;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .blog-nav-link:hover {
+      background-size: none;
+    }
+  }
 }
 
 @layer utilities {
