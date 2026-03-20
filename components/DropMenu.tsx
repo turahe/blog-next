@@ -33,6 +33,8 @@ import {
   RocketIcon,
   TwitterLogoIcon,
 } from "@radix-ui/react-icons";
+import { authChangedEventName } from "@/lib/auth-cookies";
+import { useLocale } from "@/contexts/LocaleProvider";
 import { authService } from "@/services/auth.service";
 
 function itemClass(focus: boolean) {
@@ -45,6 +47,7 @@ function itemClass(focus: boolean) {
 }
 
 export default function DropMenu() {
+  const { t } = useLocale();
   const router = useRouter();
   const [playPageChange] = useSound("/static/sounds/page-change.mp3");
   const [authed, setAuthed] = useState(false);
@@ -57,15 +60,11 @@ export default function DropMenu() {
     queueMicrotask(() => {
       syncAuth();
     });
-    const onStorage = (e: StorageEvent) => {
-      if (e.key === "blog_access_token" || e.key === "blog_refresh_token") {
-        syncAuth();
-      }
-    };
-    window.addEventListener("storage", onStorage);
+    const onAuthChanged = () => syncAuth();
+    window.addEventListener(authChangedEventName, onAuthChanged);
     window.addEventListener("focus", syncAuth);
     return () => {
-      window.removeEventListener("storage", onStorage);
+      window.removeEventListener(authChangedEventName, onAuthChanged);
       window.removeEventListener("focus", syncAuth);
     };
   }, [syncAuth]);
@@ -118,7 +117,7 @@ export default function DropMenu() {
                   <Link href="/" className={itemClass(focus)}>
                     <span className="flex flex-row items-center">
                       <HomeIcon className="mr-4 mt-0.5 shrink-0" aria-hidden />
-                      Home
+                      {t("menu.home")}
                     </span>
                   </Link>
                 )}
@@ -128,7 +127,7 @@ export default function DropMenu() {
                   <Link href="/posts" className={itemClass(focus)}>
                     <span className="flex flex-row items-center">
                       <Pencil1Icon className="mr-4 mt-0.5 shrink-0" aria-hidden />
-                      Blog
+                      {t("menu.blog")}
                     </span>
                   </Link>
                 )}
@@ -141,7 +140,7 @@ export default function DropMenu() {
                   >
                     <span className="flex flex-row items-center">
                       <CodeIcon className="mr-4 mt-0.5 shrink-0" aria-hidden />
-                      Snippets
+                      {t("menu.snippets")}
                     </span>
                   </Link>
                 )}
@@ -151,7 +150,7 @@ export default function DropMenu() {
                   <Link href="/projects" className={itemClass(focus)}>
                     <span className="flex flex-row items-center">
                       <ArchiveIcon className="mr-4 mt-0.5 shrink-0" aria-hidden />
-                      Projects
+                      {t("menu.projects")}
                     </span>
                   </Link>
                 )}
@@ -164,7 +163,7 @@ export default function DropMenu() {
                   >
                     <span className="flex flex-row items-center">
                       <PersonIcon className="mr-4 mt-0.5 shrink-0" aria-hidden />
-                      About
+                      {t("menu.about")}
                     </span>
                   </Link>
                 )}
@@ -179,7 +178,7 @@ export default function DropMenu() {
                     >
                       <span className="flex flex-row items-center">
                         <span className="mr-2 inline-flex items-center">
-                          Sign out
+                          {t("menu.signOut")}
                         </span>
                       </span>
                     </button>
@@ -187,7 +186,7 @@ export default function DropMenu() {
                     <Link href="/auth/login" className={itemClass(focus)}>
                       <span className="flex flex-row items-center">
                         <EnterIcon className="mr-4 mt-0.5 shrink-0" aria-hidden />
-                        Sign in
+                        {t("menu.signIn")}
                       </span>
                     </Link>
                   )
@@ -204,7 +203,7 @@ export default function DropMenu() {
                   >
                     <span className="flex flex-row items-center">
                       <Link2Icon className="mr-4 mt-0.5 shrink-0" aria-hidden />
-                      Contact
+                      {t("menu.contact")}
                     </span>
                   </Link>
                 )}
@@ -214,7 +213,7 @@ export default function DropMenu() {
                   <Link href="/tags" className={itemClass(focus)}>
                     <span className="flex flex-row items-center">
                       <FrameIcon className="mr-4 mt-0.5 shrink-0" aria-hidden />
-                      Tags
+                      {t("menu.tags")}
                     </span>
                   </Link>
                 )}
@@ -227,7 +226,7 @@ export default function DropMenu() {
                   >
                     <span className="flex flex-row items-center">
                       <ChatBubbleIcon className="mr-4 mt-0.5 shrink-0" aria-hidden />
-                      Guestbook
+                      {t("menu.guestbook")}
                     </span>
                   </Link>
                 )}
@@ -240,7 +239,7 @@ export default function DropMenu() {
                   >
                     <span className="flex flex-row items-center">
                       <LaptopIcon className="mr-4 mt-0.5 shrink-0" aria-hidden />
-                      Uses
+                      {t("menu.uses")}
                     </span>
                   </Link>
                 )}
@@ -253,7 +252,7 @@ export default function DropMenu() {
                   >
                     <span className="flex flex-row items-center">
                       <DiscIcon className="mr-4 mt-0.5 shrink-0" aria-hidden />
-                      Now
+                      {t("menu.now")}
                     </span>
                   </Link>
                 )}
@@ -266,7 +265,7 @@ export default function DropMenu() {
                   >
                     <span className="flex flex-row items-center">
                       <BarChartIcon className="mr-4 mt-0.5 shrink-0" aria-hidden />
-                      Stats
+                      {t("menu.stats")}
                     </span>
                   </Link>
                 )}
@@ -279,7 +278,7 @@ export default function DropMenu() {
                   >
                     <span className="flex flex-row items-center">
                       <RocketIcon className="mr-4 mt-0.5 shrink-0" aria-hidden />
-                      Journey
+                      {t("menu.journey")}
                     </span>
                   </Link>
                 )}
@@ -292,7 +291,7 @@ export default function DropMenu() {
                   >
                     <span className="flex flex-row items-center">
                       <DrawingPinIcon className="mr-4 mt-0.5 shrink-0" aria-hidden />
-                      Recommends
+                      {t("menu.recommends")}
                     </span>
                   </Link>
                 )}
@@ -305,7 +304,7 @@ export default function DropMenu() {
                   >
                     <span className="flex flex-row items-center">
                       <QuoteIcon className="mr-4 mt-0.5 shrink-0" aria-hidden />
-                      Quotes
+                      {t("menu.quotes")}
                     </span>
                   </Link>
                 )}
@@ -318,7 +317,7 @@ export default function DropMenu() {
                   >
                     <span className="flex flex-row items-center">
                       <CalendarIcon className="mr-4 mt-0.5 shrink-0" aria-hidden />
-                      Activity
+                      {t("menu.activity")}
                     </span>
                   </Link>
                 )}
@@ -331,7 +330,7 @@ export default function DropMenu() {
                   >
                     <span className="flex flex-row items-center">
                       <TwitterLogoIcon className="mr-4 mt-0.5 shrink-0" aria-hidden />
-                      Tweets
+                      {t("menu.tweets")}
                     </span>
                   </Link>
                 )}

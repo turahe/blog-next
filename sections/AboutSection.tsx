@@ -1,13 +1,12 @@
 "use client";
 
-import Image from "next/image";
 import { motion } from "motion/react";
-import { homeVisuals } from "@/lib/home-visuals";
+import { useLocale } from "@/contexts/LocaleProvider";
 import { fadeInUp, premiumEase, revealViewport, staggerSection } from "@/lib/motion-variants";
 import { siteMetadata } from "@/lib/site-metadata";
 
 export function AboutSection() {
-  const profileAlt = `Portrait — ${siteMetadata.author}`;
+  const { t } = useLocale();
 
   return (
     <section id="about" className="py-24 md:py-32" aria-labelledby="about-heading">
@@ -21,7 +20,7 @@ export function AboutSection() {
         >
           <div>
             <motion.p variants={fadeInUp} className="section-label">
-              About
+              {t("about.label")}
             </motion.p>
             <div className="relative mt-2 inline-block max-w-full">
               <motion.h2
@@ -29,7 +28,7 @@ export function AboutSection() {
                 variants={fadeInUp}
                 className="section-title pr-1"
               >
-                Clear thinking, shipped software
+                {t("about.title")}
               </motion.h2>
               <motion.span
                 className="absolute -bottom-1 left-0 h-0.5 w-full rounded-full bg-gradient-to-r from-primary-500 via-violet-500 to-primary-500/60 origin-left dark:from-primary-400 dark:via-violet-400 dark:to-primary-400/50"
@@ -45,15 +44,14 @@ export function AboutSection() {
               className="mt-8 max-w-xl space-y-5 text-[0.9375rem] leading-[1.65] text-slate-600 sm:mt-10 dark:text-slate-400"
             >
               <p>
-                I&apos;m{" "}
-                <strong className="font-medium text-slate-800 dark:text-slate-100">{siteMetadata.author}</strong>
-                — {siteMetadata.jobTitle}. {siteMetadata.description} I care about readable code,
-                resilient architecture, and interfaces that respect the reader&apos;s time.
+                {t("about.p1", {
+                  author: siteMetadata.author,
+                  jobTitle: t("hero.jobTitle"),
+                  tagline: t("about.tagline"),
+                  care: t("about.p1Care"),
+                })}
               </p>
-              <p>
-                When I&apos;m not writing or building, I&apos;m usually digging into performance,
-                developer experience, or the quiet details that make a product feel trustworthy.
-              </p>
+              <p>{t("about.p2")}</p>
             </motion.div>
           </div>
           <motion.div

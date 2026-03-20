@@ -17,9 +17,11 @@ import { motion } from "motion/react";
 import useSound from "use-sound";
 import { FiCommand } from "react-icons/fi";
 import { HiSearch } from "react-icons/hi";
+import { useLocale } from "@/contexts/LocaleProvider";
 import type { CommandNavigation, CommandPage } from "@/lib/command-navigation";
 
 function CommandPalette({ navigation }: { navigation: CommandNavigation }) {
+  const { t } = useLocale();
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [query, setQuery] = useState("");
@@ -52,7 +54,7 @@ function CommandPalette({ navigation }: { navigation: CommandNavigation }) {
       <motion.button
         className="ml-2 mr-1 flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border border-slate-300/90 bg-slate-100 p-1 text-slate-800 transition-all duration-200 ease-in-out hover:border-slate-400 hover:bg-slate-200/90 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100 dark:hover:border-slate-500 dark:hover:bg-slate-700"
         type="button"
-        aria-label="Command palette"
+        aria-label={t("cmd.palette")}
         aria-expanded={isOpen}
         aria-haspopup="dialog"
         animate={{ rotate: isOpen ? 360 : 0 }}
@@ -116,7 +118,7 @@ function CommandPalette({ navigation }: { navigation: CommandNavigation }) {
                           displayValue={() => query}
                           onChange={(event) => setQuery(event.target.value)}
                           className="h-12 w-full border-0 bg-transparent text-sm text-slate-900 placeholder-slate-400 focus:ring-0 focus:outline-none dark:text-slate-100 dark:placeholder-slate-500"
-                          placeholder="Search..."
+                          placeholder={t("cmd.searchPlaceholder")}
                           autoComplete="off"
                         />
                       </div>
@@ -155,7 +157,7 @@ function CommandPalette({ navigation }: { navigation: CommandNavigation }) {
                       ) : null}
                       {query.length > 0 && filtered.length === 0 ? (
                         <p className="px-12 py-4 text-sm text-slate-500 dark:text-slate-400">
-                          no results found
+                          {t("cmd.noResults")}
                         </p>
                       ) : null}
                     </div>

@@ -2,8 +2,16 @@
 
 import { ThemeProvider } from "next-themes";
 import type { ReactNode } from "react";
+import { LocaleProvider } from "@/contexts/LocaleProvider";
+import type { Locale } from "@/lib/i18n";
 
-export function Providers({ children }: { children: ReactNode }) {
+export function Providers({
+  children,
+  initialLocale,
+}: {
+  children: ReactNode;
+  initialLocale: Locale;
+}) {
   return (
     <ThemeProvider
       attribute="class"
@@ -12,7 +20,7 @@ export function Providers({ children }: { children: ReactNode }) {
       storageKey="go-blog-theme"
       disableTransitionOnChange
     >
-      {children}
+      <LocaleProvider initialLocale={initialLocale}>{children}</LocaleProvider>
     </ThemeProvider>
   );
 }

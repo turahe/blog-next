@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useLocale } from "@/contexts/LocaleProvider";
 import { authService } from "@/services/auth.service";
 
 const generateDeviceId = (): string => {
@@ -12,6 +13,7 @@ const generateDeviceId = (): string => {
 };
 
 export function LoginForm() {
+  const { t } = useLocale();
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -28,7 +30,7 @@ export function LoginForm() {
     try {
       const result = await authService.login({ email, password, deviceId });
       if (result.accessToken) {
-        authService.setTokens(result.accessToken, result.refreshToken);
+        authService.setTokens(result.accessToken, result.refreshToken, result.expiresAt);
       }
       router.push("/");
       router.refresh();
@@ -45,7 +47,7 @@ export function LoginForm() {
         type="email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
-        placeholder="Email"
+        placeholder={t("auth.email")}
         required
         className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none ring-blue-500 focus:ring-2"
       />
@@ -54,7 +56,7 @@ export function LoginForm() {
           type={showPassword ? "text" : "password"}
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          placeholder="Password"
+          placeholder={t("auth.password")}
           required
           className="w-full rounded-lg border border-slate-300 px-3 py-2 pr-16 text-sm outline-none ring-blue-500 focus:ring-2"
         />
@@ -63,7 +65,7 @@ export function LoginForm() {
           onClick={() => setShowPassword((prev) => !prev)}
           className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-medium text-slate-600 hover:text-slate-900"
         >
-          {showPassword ? "Hide" : "Show"}
+          {showPassword ? t("auth.hidePassword") : t("auth.showPassword")}
         </button>
       </div>
       <input
@@ -80,15 +82,15 @@ export function LoginForm() {
         disabled={submitting}
         className="w-full rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-60"
       >
-        {submitting ? "Signing in..." : "Sign in"}
+        {submitting ? t("auth.signInSubmitting") : t("auth.signIn")}
       </button>
 
       <div className="flex items-center justify-between pt-1 text-sm">
         <Link href="/auth/forgot-password" className="text-slate-600 hover:text-slate-900">
-          Forgot password?
+          {t("auth.forgotPassword")}
         </Link>
         <Link href="/auth/register" className="text-slate-600 hover:text-slate-900">
-          Create account
+          {t("auth.createAccount")}
         </Link>
       </div>
     </form>

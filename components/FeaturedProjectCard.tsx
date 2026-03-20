@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion, useReducedMotion, type Variants } from "motion/react";
 import { FiArrowUpRight } from "react-icons/fi";
+import { useLocale } from "@/contexts/LocaleProvider";
 import type { FeaturedProject } from "@/lib/featured-projects";
 
 const premiumEase = [0.16, 1, 0.3, 1] as const;
@@ -82,6 +83,7 @@ const captionVariants: Variants = {
 };
 
 export function FeaturedProjectCard({ project }: FeaturedProjectCardProps) {
+  const { t } = useLocale();
   const { title, description, href, tech, gradient, imageSrc, imageAlt } = project;
   const g = gradientMap[gradient];
   const external = isExternal(href);
@@ -130,7 +132,9 @@ export function FeaturedProjectCard({ project }: FeaturedProjectCardProps) {
           <span className="text-balance text-base font-semibold tracking-tight text-white drop-shadow-md">
             {title}
           </span>
-          <span className="text-sm font-medium text-white/88">{external ? "View in new tab" : "View project"}</span>
+          <span className="text-sm font-medium text-white/88">
+            {external ? t("work.viewInNewTab") : t("work.viewProject")}
+          </span>
         </motion.div>
       </div>
       <div className="relative flex flex-1 flex-col gap-2.5 p-6">

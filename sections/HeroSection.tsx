@@ -10,8 +10,10 @@ import {
   staggerContainer,
 } from "@/lib/motion-variants";
 import { siteMetadata } from "@/lib/site-metadata";
+import { useLocale } from "@/contexts/LocaleProvider";
 
 export function HeroSection() {
+  const { t } = useLocale();
   const sectionRef = useRef<HTMLElement>(null);
   const reduce = useReducedMotion();
   const { scrollYProgress } = useScroll({
@@ -50,7 +52,7 @@ export function HeroSection() {
                 animate={{ width: 48, opacity: 1 }}
                 transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
               />
-              <span className="section-label">Portfolio</span>
+              <span className="section-label">{t("hero.portfolio")}</span>
             </motion.div>
             <motion.h1
               id="hero-heading"
@@ -63,20 +65,20 @@ export function HeroSection() {
               variants={fadeInUp}
               className="mt-5 max-w-xl text-lg font-normal text-slate-500 sm:text-xl dark:text-slate-400"
             >
-              {siteMetadata.jobTitle}
+              {t("hero.jobTitle")}
             </motion.p>
             <motion.p variants={fadeInUp} className="section-lead mt-8 max-w-xl">
-              {siteMetadata.heroDescription}
+              {t("hero.heroDescription")}
             </motion.p>
             <motion.div
               variants={fadeInUp}
               className="mt-12 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-start sm:gap-5"
             >
               <MotionPrimaryLink href={resumeHref} className={primaryBtn}>
-                Hire me
+                {t("hero.hireMe")}
               </MotionPrimaryLink>
               <MotionPrimaryLink href="/projects" className={secondaryBtn}>
-                View projects →
+                {t("hero.viewProjects")}
               </MotionPrimaryLink>
             </motion.div>
             <motion.p
@@ -90,7 +92,7 @@ export function HeroSection() {
               <kbd className="rounded border border-slate-200 bg-slate-100/80 px-1.5 py-0.5 font-mono text-[0.65rem] text-slate-600 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-300">
                 K
               </kbd>
-              <span className="ml-1">Command palette</span>
+              <span className="ml-1">{t("hero.commandPalette")}</span>
             </motion.p>
           </motion.div>
         </motion.div>

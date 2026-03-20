@@ -1,36 +1,70 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Go Blog
 
-## Getting Started
+Portfolio and blog frontend built with the Next.js App Router. The homepage combines landing sections (hero, about, tech stack, featured work) with optional integration against a Go (or other) backend via a versioned REST API.
 
-First, run the development server:
+## Stack
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- **Next.js** 16 · **React** 19 · **TypeScript**
+- **Tailwind CSS** 4 (with `@tailwindcss/typography`, `@tailwindcss/forms`)
+- **Motion** (animations), **next-themes** (dark mode), **axios** (API client)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Prerequisites
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- Node.js 20+ (recommended)
+- npm, pnpm, yarn, or bun
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Setup
 
-## Learn More
+1. Clone the repo and install dependencies:
 
-To learn more about Next.js, take a look at the following resources:
+   ```bash
+   npm install
+   ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+2. Environment variables — copy `.env.example` to `.env.local` and adjust:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+   | Variable | Purpose |
+   |----------|---------|
+   | `NEXT_PUBLIC_API_BASE_URL` | Base URL for the API (e.g. `http://localhost:8080/api/v1`) |
+   | `NEXT_PUBLIC_CONTACT_EMAIL` | Optional — public contact email for CTAs (`lib/site-metadata.ts`) |
 
-## Deploy on Vercel
+## Scripts
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Start the dev server ([http://localhost:3000](http://localhost:3000)) |
+| `npm run build` | Production build |
+| `npm run start` | Run the production server |
+| `npm run lint` | ESLint |
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Internationalization (EN / ID)
+
+- UI copy lives in **`lib/i18n/messages/en.ts`** and **`lib/i18n/messages/id.ts`** (same keys).
+- Locale is stored in the **`go-blog-locale`** cookie (`en` or `id`), read on the server for `<html lang>` and synced on the client via **`LocaleProvider`** (`contexts/LocaleProvider.tsx`).
+- Use **`useLocale()`** for `t('path.to.key')`, `locale`, `setLocale`, and BCP‑47 **`dateLocale`** (for dates).
+- Header **EN | ID** toggle: `components/LanguageToggle.tsx`.
+
+## Project layout
+
+- **`app/`** — App Router routes (`page.tsx`, layouts, API-facing pages: blog, posts, tags, projects, auth)
+- **`sections/`** — Composed homepage sections (hero, about, tech stack, etc.)
+- **`components/`** — Shared UI (backdrop, cards, motion helpers, …)
+- **`lib/`** — Site metadata, API helpers, motion variants, utilities
+
+Copy and SEO defaults for the marketing shell live in **`lib/site-metadata.ts`**.
+
+## API
+
+The app expects a backend compatible with the API shape used in `lib/` / client calls (OpenAPI spec in-repo: `swagger.json`). Point `NEXT_PUBLIC_API_BASE_URL` at your running server.
+
+## Deploy
+
+Deploy like any Next.js app — e.g. [Vercel](https://vercel.com) or your host of choice. Set env vars in the hosting dashboard before going live.
+
+## Docs
+
+- [Next.js documentation](https://nextjs.org/docs)
+
+---
+
+This project started from [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app) and has since grown into a full portfolio/blog surface.

@@ -1,5 +1,5 @@
-import Link from "next/link";
 import type { ReactNode } from "react";
+import { AuthBackLink } from "@/components/AuthBackLink";
 
 import type { Tag } from "@/types/tag";
 
@@ -25,12 +25,7 @@ export function AuthorLayout({ author, children }: AuthorLayoutProps) {
   return (
     <main className="mx-auto w-full max-w-4xl flex-1 px-4 py-10 sm:px-6">
       <div className="mb-8">
-        <Link
-          href="/"
-          className="text-sm font-medium text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-slate-100"
-        >
-          Back to blog
-        </Link>
+        <AuthBackLink variant="inline" />
       </div>
 
       <section className="rounded-2xl border border-slate-200 bg-white p-7 shadow-sm dark:border-slate-800 dark:bg-slate-900">

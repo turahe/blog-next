@@ -2,9 +2,11 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { useLocale } from "@/contexts/LocaleProvider";
 import { authService } from "@/services/auth.service";
 
 export function ForgotPasswordForm() {
+  const { t } = useLocale();
   const [email, setEmail] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -34,7 +36,7 @@ export function ForgotPasswordForm() {
         type="email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
-        placeholder="Email"
+        placeholder={t("auth.email")}
         required
         className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none ring-blue-500 focus:ring-2"
       />
@@ -51,9 +53,9 @@ export function ForgotPasswordForm() {
       </button>
 
       <p className="text-sm text-slate-600">
-        Remembered your password?{" "}
+        {t("auth.rememberedPassword")}{" "}
         <Link href="/auth/login" className="font-medium text-slate-900">
-          Sign in
+          {t("auth.signIn")}
         </Link>
       </p>
     </form>

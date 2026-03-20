@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import type { Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { cookies } from "next/headers";
 import { AppChrome } from "@/components/AppChrome";
 import { Providers } from "@/app/providers";
+import { LOCALE_COOKIE, resolveLocale } from "@/lib/i18n";
 import { siteMetadata } from "@/lib/site-metadata";
 import "./globals.css";
 
@@ -62,19 +64,22 @@ export const viewport: Viewport = {
   ],
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const cookieStore = await cookies();
+  const initialLocale = resolveLocale(cookieStore.get(LOCALE_COOKIE)?.value);
+
   return (
     <html
-      lang="en"
+      lang={initialLocale}
       suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable} h-full scroll-smooth antialiased`}
     >
       <body className="page-root flex min-h-full flex-col">
-        <Providers>
+        <Providers initialLocale={initialLocale}>
           <AppChrome>{children}</AppChrome>
         </Providers>
       </body>

@@ -9,8 +9,10 @@ import {
   staggerSection,
 } from "@/lib/motion-variants";
 import { techStack } from "@/lib/tech-stack";
+import { useLocale } from "@/contexts/LocaleProvider";
 
 export function TechStackSection() {
+  const { t } = useLocale();
   return (
     <section id="skills" className="relative py-24 md:py-32" aria-labelledby="skills-heading">
       <div
@@ -46,14 +48,13 @@ export function TechStackSection() {
           viewport={revealViewport}
         >
           <motion.p variants={fadeInUp} className="section-label">
-            Toolkit
+            {t("skills.label")}
           </motion.p>
           <motion.h2 id="skills-heading" variants={fadeInUp} className="section-title mt-2">
-            Tech I ship with
+            {t("skills.title")}
           </motion.h2>
           <motion.p variants={fadeInUp} className="section-lead">
-            A focused stack for modern products — pragmatic choices, consistent patterns, and room
-            to evolve.
+            {t("skills.lead")}
           </motion.p>
         </motion.div>
         <motion.div

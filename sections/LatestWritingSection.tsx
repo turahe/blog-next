@@ -5,7 +5,7 @@ import { MotionArrowLink, MotionTextLink } from "@/components/MicroMotionLinks";
 import { TagChip } from "@/components/TagChip";
 import { postExcerpt } from "@/lib/excerpt";
 import { formatDate } from "@/lib/format-date";
-import { formatReadingTime } from "@/lib/reading-time";
+import { getReadingTimeMinutes } from "@/lib/reading-time";
 import {
   fadeInUp,
   revealViewport,
@@ -13,7 +13,7 @@ import {
   staggerItem,
   staggerSection,
 } from "@/lib/motion-variants";
-import { siteMetadata } from "@/lib/site-metadata";
+import { useLocale } from "@/contexts/LocaleProvider";
 import type { Post } from "@/types/post";
 
 type LatestWritingSectionProps = {
@@ -26,6 +26,7 @@ function postHref(post: Post): string {
 }
 
 export function LatestWritingSection({ posts, maxDisplay }: LatestWritingSectionProps) {
+  const { t, dateLocale } = useLocale();
   const reduce = useReducedMotion();
   const slice = posts.slice(0, maxDisplay);
 
@@ -41,13 +42,13 @@ export function LatestWritingSection({ posts, maxDisplay }: LatestWritingSection
         >
           <div>
             <motion.p variants={fadeInUp} className="section-label">
-              Blog
+              {t("writing.label")}
             </motion.p>
             <motion.h2 id="writing-heading" variants={fadeInUp} className="section-title mt-2">
-              Latest writing
+              {t("writing.title")}
             </motion.h2>
             <motion.p variants={fadeInUp} className="section-lead">
-              Notes, articles, and reflections — the same voice as the work above, in long form.
+              {t("writing.lead")}
             </motion.p>
           </div>
           {posts.length > maxDisplay ? (
@@ -56,7 +57,7 @@ export function LatestWritingSection({ posts, maxDisplay }: LatestWritingSection
                 href="/posts"
                 className="text-sm font-medium text-slate-700 dark:text-slate-300"
               >
-                All posts
+                {t("writing.allPosts")}
               </MotionArrowLink>
             </motion.div>
           ) : null}
@@ -71,7 +72,7 @@ export function LatestWritingSection({ posts, maxDisplay }: LatestWritingSection
         >
           {!slice.length ? (
             <motion.li variants={staggerItem} className="py-10 text-sm text-slate-500 dark:text-slate-400">
-              No posts found.
+              {t("writing.noPosts")}
             </motion.li>
           ) : null}
           {slice.map((post) => {
@@ -88,13 +89,15 @@ export function LatestWritingSection({ posts, maxDisplay }: LatestWritingSection
                 >
                   <div className="flex flex-col gap-6 lg:flex-row lg:gap-12">
                     <dl className="shrink-0 space-y-1 lg:w-36">
-                      <dt className="sr-only">Published on</dt>
+                      <dt className="sr-only">{t("writing.publishedOn")}</dt>
                       <dd className="text-xs font-medium tabular-nums text-slate-500 dark:text-slate-400">
-                        <time dateTime={date}>{formatDate(date, siteMetadata.locale)}</time>
+                        <time dateTime={date}>{formatDate(date, dateLocale)}</time>
                       </dd>
-                      <dt className="sr-only">Reading time</dt>
+                      <dt className="sr-only">{t("writing.readingTime")}</dt>
                       <dd className="text-xs text-slate-400 dark:text-slate-500">
-                        {formatReadingTime(post.content)}
+                        {t("writing.minRead", {
+                          minutes: getReadingTimeMinutes(post.content),
+                        })}
                       </dd>
                     </dl>
                     <div className="min-w-0 flex-1 space-y-3">
@@ -120,9 +123,9 @@ export function LatestWritingSection({ posts, maxDisplay }: LatestWritingSection
                         <MotionArrowLink
                           href={href}
                           className="text-sm font-medium text-slate-700 group-hover:text-primary-600 dark:text-slate-300 dark:group-hover:text-primary-300"
-                          aria-label={`Read “${post.title}”`}
+                          aria-label={t("writing.readAria", { title: post.title })}
                         >
-                          Read more
+                          {t("writing.readMore")}
                         </MotionArrowLink>
                       </div>
                     </div>

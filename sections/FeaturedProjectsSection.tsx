@@ -10,8 +10,10 @@ import {
   staggerSection,
 } from "@/lib/motion-variants";
 import { featuredProjects } from "@/lib/featured-projects";
+import { useLocale } from "@/contexts/LocaleProvider";
 
 export function FeaturedProjectsSection() {
+  const { t } = useLocale();
   return (
     <section id="work" className="py-24 md:py-32" aria-labelledby="work-heading">
       <div className="section-wrap">
@@ -23,14 +25,13 @@ export function FeaturedProjectsSection() {
           viewport={revealViewport}
         >
           <motion.p variants={fadeInUp} className="section-label">
-            Featured
+            {t("work.label")}
           </motion.p>
           <motion.h2 id="work-heading" variants={fadeInUp} className="section-title mt-2">
-            Selected work
+            {t("work.title")}
           </motion.h2>
           <motion.p variants={fadeInUp} className="section-lead">
-            Highlights from products, content, and experiments — each with a clear goal and a
-            thoughtful technical story.
+            {t("work.lead")}
           </motion.p>
         </motion.div>
         <motion.ul

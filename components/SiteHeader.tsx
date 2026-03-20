@@ -3,12 +3,13 @@
 import Link from "next/link";
 import { motion, useMotionValueEvent, useReducedMotion, useScroll } from "motion/react";
 import { Disclosure, Transition } from "@headlessui/react";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import CommandPalette from "@/components/CommandPalette";
 import DropMenu from "@/components/DropMenu";
+import { LanguageToggle } from "@/components/LanguageToggle";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { SiteTitleTypewriter } from "@/components/SiteTitleTypewriter";
-import { commandNavigation } from "@/lib/command-navigation";
+import { useLocale } from "@/contexts/LocaleProvider";
 import { siteMetadata } from "@/lib/site-metadata";
 
 function NavLink({
@@ -36,6 +37,18 @@ function NavLink({
 }
 
 export function SiteHeader() {
+  const { t } = useLocale();
+  const commandNavigation = useMemo(
+    () => ({
+      pages: [
+        { name: t("cmd.home"), href: "/", repo: "/" },
+        { name: t("cmd.blog"), href: "/posts", repo: t("cmd.allPosts") },
+        { name: t("cmd.tags"), href: "/tags", repo: "/tags" },
+        { name: t("cmd.projects"), href: "/projects", repo: "/projects" },
+      ],
+    }),
+    [t],
+  );
   const [elevated, setElevated] = useState(false);
   const { scrollY, scrollYProgress } = useScroll();
 
@@ -68,10 +81,10 @@ export function SiteHeader() {
 
               <div className="hidden items-center gap-2 md:flex md:gap-3">
                 <nav className="flex items-center gap-1 text-sm">
-                  <NavLink href="/#skills">Skills</NavLink>
-                  <NavLink href="/#work">Work</NavLink>
-                  <NavLink href="/#about">About</NavLink>
-                  <NavLink href="/#contact">Contact</NavLink>
+                  <NavLink href="/#skills">{t("nav.skills")}</NavLink>
+                  <NavLink href="/#work">{t("nav.work")}</NavLink>
+                  <NavLink href="/#about">{t("nav.about")}</NavLink>
+                  <NavLink href="/#contact">{t("nav.contact")}</NavLink>
                   <span className="mx-1 hidden h-3.5 w-px bg-slate-200/90 dark:bg-slate-600 xl:inline" aria-hidden />
                   {commandNavigation.pages.map((page) => (
                     <NavLink key={page.href} href={page.href}>
@@ -80,15 +93,17 @@ export function SiteHeader() {
                   ))}
                 </nav>
                 <CommandPalette navigation={commandNavigation} />
+                <LanguageToggle />
                 <DropMenu />
                 <ThemeToggle />
               </div>
 
               <div className="flex items-center gap-2 md:hidden">
                 <CommandPalette navigation={commandNavigation} />
+                <LanguageToggle />
                 <DropMenu />
                 <Disclosure.Button className="rounded-md border border-slate-300 px-2.5 py-1 text-xs font-medium text-slate-700 transition hover:bg-slate-100 dark:border-slate-600 dark:text-slate-200 dark:hover:bg-slate-800">
-                  {open ? "Close" : "Menu"}
+                  {open ? t("nav.menuClose") : t("nav.menuOpen")}
                 </Disclosure.Button>
                 <ThemeToggle />
               </div>
@@ -110,13 +125,20 @@ export function SiteHeader() {
           >
             <Disclosure.Panel className="border-b border-slate-200/60 bg-white/95 px-5 py-3 backdrop-blur-md md:hidden dark:border-slate-800 dark:bg-slate-900/95">
               <nav className="flex flex-col gap-0.5">
-                {["/#skills", "/#work", "/#about", "/#contact"].map((href, i) => (
+                {(
+                  [
+                    ["/#skills", "nav.skills"],
+                    ["/#work", "nav.work"],
+                    ["/#about", "nav.about"],
+                    ["/#contact", "nav.contact"],
+                  ] as const
+                ).map(([href, key]) => (
                   <Link
                     key={href}
                     href={href}
                     className="rounded-md px-2 py-2 text-sm font-normal text-slate-600 transition hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800/60"
                   >
-                    {["Skills", "Work", "About", "Contact"][i]}
+                    {t(key)}
                   </Link>
                 ))}
                 {commandNavigation.pages.map((page) => (

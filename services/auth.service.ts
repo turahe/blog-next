@@ -1,5 +1,11 @@
 import { api } from "@/lib/api";
 import {
+  clearAuthCookies,
+  getAccessTokenFromCookie,
+  notifyAuthChanged,
+  setAuthCookies,
+} from "@/lib/auth-cookies";
+import {
   ApiEnvelope,
   AuthResponse,
   ForgotPasswordPayload,
@@ -8,9 +14,6 @@ import {
   RegisterPayload,
   ResetPasswordPayload,
 } from "@/types/auth";
-
-const ACCESS_TOKEN_KEY = "blog_access_token";
-const REFRESH_TOKEN_KEY = "blog_refresh_token";
 
 export const authService = {
   async register(payload: RegisterPayload): Promise<AuthResponse> {
@@ -48,26 +51,21 @@ export const authService = {
     };
   },
 
-  setTokens(accessToken: string, refreshToken?: string) {
+  setTokens(accessToken: string, refreshToken?: string, expiresAt?: string) {
     if (typeof window !== "undefined") {
-      localStorage.setItem(ACCESS_TOKEN_KEY, accessToken);
-      if (refreshToken) {
-        localStorage.setItem(REFRESH_TOKEN_KEY, refreshToken);
-      }
+      setAuthCookies(accessToken, refreshToken, expiresAt);
+      notifyAuthChanged();
     }
   },
 
   clearTokens() {
     if (typeof window !== "undefined") {
-      localStorage.removeItem(ACCESS_TOKEN_KEY);
-      localStorage.removeItem(REFRESH_TOKEN_KEY);
+      clearAuthCookies();
+      notifyAuthChanged();
     }
   },
 
   getAccessToken(): string | null {
-    if (typeof window !== "undefined") {
-      return localStorage.getItem(ACCESS_TOKEN_KEY);
-    }
-    return null;
+    return getAccessTokenFromCookie();
   },
 };

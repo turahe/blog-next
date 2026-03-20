@@ -5,8 +5,10 @@ import { motion } from "motion/react";
 import { MotionButton, MotionTextLink } from "@/components/MicroMotionLinks";
 import { fadeInUp, revealViewport, staggerGrid, staggerSection } from "@/lib/motion-variants";
 import { siteMetadata } from "@/lib/site-metadata";
+import { useLocale } from "@/contexts/LocaleProvider";
 
 export function ContactSection() {
+  const { t } = useLocale();
   const email = siteMetadata.contactEmail?.trim();
   const github = siteMetadata.githubUrl;
 
@@ -15,17 +17,18 @@ export function ContactSection() {
       e.preventDefault();
       const form = e.currentTarget;
       const fd = new FormData(form);
-      const name = String(fd.get("name") ?? "").trim() || "Portfolio visitor";
+      const name =
+        String(fd.get("name") ?? "").trim() || t("contact.defaultName");
       const message = String(fd.get("message") ?? "").trim();
       if (!email) {
         window.open(github, "_blank", "noopener,noreferrer");
         return;
       }
-      const subject = encodeURIComponent(`Hire / collaboration — ${name}`);
+      const subject = encodeURIComponent(t("contact.mailSubject", { name }));
       const body = encodeURIComponent(message || `Hi ${siteMetadata.author.split(" ")[0]},\n\n`);
       window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
     },
-    [email, github],
+    [email, github, t],
   );
 
   return (
@@ -40,14 +43,13 @@ export function ContactSection() {
         >
           <div>
             <motion.p variants={fadeInUp} className="section-label">
-              Contact
+              {t("contact.label")}
             </motion.p>
             <motion.h2 id="contact-heading" variants={fadeInUp} className="section-title mt-2">
-              Let&apos;s build something solid
+              {t("contact.title")}
             </motion.h2>
             <motion.p variants={fadeInUp} className="section-lead">
-              Tell me about your product, timeline, or team. I read every message and reply as soon
-              as I can.
+              {t("contact.lead")}
             </motion.p>
             <motion.div
               variants={fadeInUp}
@@ -67,14 +69,14 @@ export function ContactSection() {
                 className="text-sm font-normal text-slate-600 underline-offset-4 hover:underline dark:text-slate-400"
                 external
               >
-                GitHub
+                {t("footer.github")}
               </MotionTextLink>
               <MotionTextLink
                 href={siteMetadata.resumeUrl}
                 className="text-sm font-normal text-slate-600 underline-offset-4 hover:underline dark:text-slate-400"
                 external
               >
-                Résumé
+                {t("contact.resume")}
               </MotionTextLink>
             </motion.div>
           </div>
@@ -88,26 +90,26 @@ export function ContactSection() {
           >
             <motion.div variants={fadeInUp}>
               <label htmlFor="contact-name" className="sr-only">
-                Name
+                {t("contact.name")}
               </label>
               <input
                 id="contact-name"
                 name="name"
                 type="text"
                 autoComplete="name"
-                placeholder="Name"
+                placeholder={t("contact.placeholderName")}
                 className="w-full border-0 border-b border-slate-200 bg-transparent px-0 py-3 text-sm text-slate-900 outline-none transition-colors placeholder:text-slate-400 focus:border-primary-500/60 focus:ring-0 dark:border-slate-700 dark:text-slate-100 dark:placeholder:text-slate-500 dark:focus:border-primary-400/50"
               />
             </motion.div>
             <motion.div variants={fadeInUp}>
               <label htmlFor="contact-message" className="sr-only">
-                Message
+                {t("contact.message")}
               </label>
               <textarea
                 id="contact-message"
                 name="message"
                 rows={4}
-                placeholder="What are you working on?"
+                placeholder={t("contact.placeholderMessage")}
                 className="w-full resize-none border-0 border-b border-slate-200 bg-transparent px-0 py-3 text-sm text-slate-900 outline-none transition-colors placeholder:text-slate-400 focus:border-primary-500/60 focus:ring-0 dark:border-slate-700 dark:text-slate-100 dark:placeholder:text-slate-500 dark:focus:border-primary-400/50"
               />
             </motion.div>
@@ -116,7 +118,7 @@ export function ContactSection() {
                 type="submit"
                 className="w-full rounded-md bg-slate-900 py-3 text-sm font-medium text-white transition-colors hover:bg-slate-800 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-white"
               >
-                {email ? "Send message" : "Open GitHub"}
+                {email ? t("contact.sendMessage") : t("contact.openGithub")}
               </MotionButton>
             </motion.div>
           </motion.form>
