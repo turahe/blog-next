@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
-import { DeletePostButton } from "@/components/DeletePostButton";
 import { BlogArticlePage } from "@/components/blog/BlogArticlePage";
 import { getSiteUrl } from "@/lib/site-url";
 import { postExcerpt } from "@/lib/excerpt";
@@ -51,18 +49,6 @@ export default async function PostDetailPage({ params }: PostDetailPageProps) {
   const shareUrl = siteBase ? `${siteBase}${postPath}` : postPath;
   const coverImageUrl = resolvePostCoverUrl(post);
 
-  const editActions = (
-    <>
-      <Link
-        href={`${postPath}/edit`}
-        className="inline-flex items-center justify-center rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 shadow-sm transition hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700/90"
-      >
-        Edit
-      </Link>
-      <DeletePostButton postId={post.id} />
-    </>
-  );
-
   return (
     <BlogArticlePage
       post={post}
@@ -73,7 +59,6 @@ export default async function PostDetailPage({ params }: PostDetailPageProps) {
       coverImageUrl={coverImageUrl}
       shareUrl={shareUrl}
       isoDate={post.createdAt}
-      editActions={editActions}
     />
   );
 }

@@ -1,4 +1,3 @@
-import type { ReactNode } from "react";
 import Link from "next/link";
 import { BlogTocProvider } from "@/components/blog/blog-toc-context";
 import { BlogContent } from "@/components/blog/BlogContent";
@@ -21,7 +20,6 @@ type BlogArticlePageProps = {
   coverImageUrl?: string;
   shareUrl: string;
   isoDate: string | undefined;
-  editActions?: ReactNode;
 };
 
 export function BlogArticlePage({
@@ -33,7 +31,6 @@ export function BlogArticlePage({
   coverImageUrl,
   shareUrl,
   isoDate,
-  editActions,
 }: BlogArticlePageProps) {
   return (
     <main className="min-h-0 flex-1">
@@ -52,8 +49,6 @@ export function BlogArticlePage({
           <BlogTocProvider headings={headings}>
             <div className="mt-8 grid gap-12 lg:grid-cols-[minmax(0,1fr)_260px] lg:items-start lg:gap-14 xl:gap-20">
               <article className="min-w-0 max-w-3xl">
-                {editActions ? <div className="mb-8 flex flex-wrap gap-2 lg:hidden">{editActions}</div> : null}
-
                 <BlogScrollReveal>
                   <BlogTocMobile headings={headings} />
                   <BlogHeader post={post} isoDate={isoDate} />
@@ -79,7 +74,6 @@ export function BlogArticlePage({
                 tags={tags}
                 shareUrl={shareUrl}
                 shareTitle={post.title}
-                editActions={editActions}
               />
             </div>
           </BlogTocProvider>

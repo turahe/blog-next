@@ -1,6 +1,5 @@
 "use client";
 
-import type { ReactNode } from "react";
 import clsx from "clsx";
 import { BlogShareButtons } from "@/components/blog/BlogShareButtons";
 import { useBlogToc } from "@/components/blog/blog-toc-context";
@@ -13,10 +12,9 @@ type BlogSidebarProps = {
   tags: Tag[];
   shareUrl: string;
   shareTitle: string;
-  editActions?: ReactNode;
 };
 
-export function BlogSidebar({ headings, tags, shareUrl, shareTitle, editActions }: BlogSidebarProps) {
+export function BlogSidebar({ headings, tags, shareUrl, shareTitle }: BlogSidebarProps) {
   const { activeId, scrollToHeading } = useBlogToc();
 
   return (
@@ -76,8 +74,6 @@ export function BlogSidebar({ headings, tags, shareUrl, shareTitle, editActions 
             </div>
           </div>
         ) : null}
-
-        {editActions ? <div className="flex flex-wrap gap-2 pt-2">{editActions}</div> : null}
       </div>
     </aside>
   );
