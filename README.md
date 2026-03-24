@@ -71,10 +71,9 @@ Pre-commit runs **`npm run lint`** and **`npm test`**. To skip a hook in an emer
 2. **Snyk** Open Source scan (requires repo secret `SNYK_TOKEN`; skipped for PRs from forks)
 3. Lint, unit tests, production build
 4. Playwright Chromium install and E2E tests
+5. **Deploy production (Vercel)** — runs only on **push to `main`** after `ci` succeeds. Add these [repository secrets](https://docs.github.com/en/actions/security-guides/using-secrets-in-github-actions): **`VERCEL_TOKEN`** ([account tokens](https://vercel.com/account/tokens)), **`VERCEL_ORG_ID`**, **`VERCEL_PROJECT_ID`** (Vercel project **Settings → General**). The workflow creates `.vercel/project.json` on the runner (not committed). If the repo is also connected in the Vercel dashboard for Git deploys, turn off duplicate production deploys or rely on one method.
 
 Add **`SNYK_TOKEN`** in the repository’s **Settings → Secrets and variables → Actions** (token from [Snyk](https://snyk.io) account settings).
-
-**Vercel (optional):** To enable the **`deploy-preview`** and **`deploy-production`** jobs in [`.github/workflows/ci.yml`](.github/workflows/ci.yml), add a single [repository secret](https://docs.github.com/en/actions/security-guides/using-secrets-in-github-actions) **`VERCEL_TOKEN`** from [Vercel → Account → Tokens](https://vercel.com/account/tokens). The workflow also needs **`.vercel/project.json`** in the repo (not secret): run **`npx vercel link`** once locally, then **commit** `.vercel/project.json` (see `.gitignore` — only that file is tracked; the rest of `.vercel/` stays ignored). **Preview** deploys run on pushes to **`dev`** and on **pull requests** from the same repo; **production** deploys on pushes to **`main`**. If you also connect the repo in the Vercel dashboard, turn off duplicate automatic deployments there or rely on Actions only.
 
 ## Internationalization (EN / ID)
 
@@ -119,7 +118,7 @@ The app expects a backend compatible with the API shape used in `lib/` / client 
 
 6. **Deploy.** Pushes to the connected branch create **Preview** deployments; assign **Production** to `main` (or your default branch) under **Settings → Git**.
 
-`.gitignore` ignores everything under `.vercel/` except **`.vercel/project.json`**, which you should commit after linking so CI can deploy with only **`VERCEL_TOKEN`**.
+The **`.vercel`** directory is gitignored (local CLI link data).
 
 ### CLI (optional)
 

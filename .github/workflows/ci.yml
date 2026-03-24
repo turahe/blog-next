@@ -14,9 +14,8 @@ concurrency:
 # Add repository secret SNYK_TOKEN (snyk.io → Account settings → Auth token) for the Snyk step.
 # Use checkout/setup-node v6 so the actions run on Node 24 (GitHub deprecation of Node 20 action runtimes).
 #
-# Vercel deploy jobs need secret VERCEL_TOKEN only; commit .vercel/project.json after `vercel link`.
+# Optional deploy-production: VERCEL_TOKEN, VERCEL_ORG_ID, VERCEL_PROJECT_ID (see README).
 # https://vercel.com/guides/how-can-i-use-github-actions-with-vercel
-# If you also use Vercel’s GitHub app for the same repo, disable one to avoid duplicate deployments.
 
 jobs:
   ci:
@@ -58,52 +57,15 @@ jobs:
       - name: E2E tests
         run: npm run test:e2e
 
-  deploy-preview:
-    name: Deploy preview (Vercel)
-    needs: ci
-    if: >
-      success() &&
-      (
-        (github.event_name == 'push' && github.ref == 'refs/heads/dev') ||
-        (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository)
-      )
-    runs-on: ubuntu-latest
-    timeout-minutes: 20
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v6
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v6
-        with:
-          node-version: "25"
-          cache: npm
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Require .vercel/project.json
-        run: |
-          test -f .vercel/project.json || { echo "Add .vercel/project.json (npx vercel link, then commit)"; exit 1; }
-
-      - name: Install Vercel CLI
-        run: npm install -g vercel@latest
-
-      - name: Pull Vercel environment (preview)
-        run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
-
-      - name: Build (Vercel)
-        run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
-
-      - name: Deploy preview to Vercel
-        run: vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }}
-
   deploy-production:
     name: Deploy production (Vercel)
     needs: ci
     if: success() && github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 25
+    env:
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -117,9 +79,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Require .vercel/project.json
-        run: |
-          test -f .vercel/project.json || { echo "Add .vercel/project.json (npx vercel link, then commit)"; exit 1; }
+      - name: Write .vercel/project.json
+        run: >
+          node -e "const fs=require('fs');const o=process.env.VERCEL_ORG_ID;const p=process.env.VERCEL_PROJECT_ID;if(!o||!p){console.error('Missing VERCEL_ORG_ID or VERCEL_PROJECT_ID');process.exit(1)};fs.mkdirSync('.vercel',{recursive:true});fs.writeFileSync('.vercel/project.json',JSON.stringify({orgId:o,projectId:p},null,2)+'\n');"
 
       - name: Install Vercel CLI
         run: npm install -g vercel@latest
