@@ -32,7 +32,7 @@ export default async function TagPostsPage({ params, searchParams }: TagPostsPag
   const tag = await tagQueryService.getTagBySlug(slug).catch(() => null);
   if (!tag) notFound();
 
-  const result = await postQueryService.getPostsByTag({
+  const result = await postQueryService.getPostsByTagSafe({
     tagId: tag.id,
     cursor,
     limit: 10,

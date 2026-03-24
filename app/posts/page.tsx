@@ -17,7 +17,7 @@ export default async function PostsIndexPage({ searchParams }: PostsIndexPagePro
   const resolvedSearchParams = await searchParams;
   const limit = Number(resolvedSearchParams.limit ?? "10");
   const normalizedLimit = Number.isNaN(limit) ? 10 : Math.min(Math.max(limit, 1), 50);
-  const result = await postQueryService.getPosts({
+  const result = await postQueryService.getPostsSafe({
     cursor: resolvedSearchParams.cursor,
     dir: resolvedSearchParams.dir,
     limit: normalizedLimit,

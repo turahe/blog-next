@@ -41,11 +41,11 @@ export default async function PostDetailPage({ params }: PostDetailPageProps) {
   const tags = post.tags?.length
     ? post.tags
     : post.tagIds?.length
-      ? (await tagQueryService.getTags(500)).filter((tag) => post.tagIds?.includes(tag.id))
+      ? (await tagQueryService.getTagsSafe(500)).filter((tag) => post.tagIds?.includes(tag.id))
       : [];
 
   const { html: articleHtml, headings } = preparePostArticleHtml(post.content);
-  const list = await postQueryService.getPosts({ limit: 16 });
+  const list = await postQueryService.getPostsSafe({ limit: 16 });
   const relatedPosts = list.data.filter((p) => p.id !== post.id).slice(0, 3);
   const siteBase = getSiteUrl();
   const shareUrl = siteBase ? `${siteBase}${postPath}` : postPath;

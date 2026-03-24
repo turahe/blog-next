@@ -29,6 +29,15 @@ const normalizeTags = (payload: unknown): Tag[] => {
 };
 
 export const tagQueryService = {
+  /** Same as getTags, but returns [] when the API is unreachable. */
+  async getTagsSafe(limit = 200): Promise<Tag[]> {
+    try {
+      return await this.getTags(limit);
+    } catch {
+      return [];
+    }
+  },
+
   async getTags(limit = 200): Promise<Tag[]> {
     const envelope = await fetchJson<ApiEnvelope<unknown>>(`/tags?limit=${limit}`);
     const tags = normalizeTags(envelope.data);

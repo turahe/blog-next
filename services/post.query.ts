@@ -56,7 +56,22 @@ async function fetchJson<T>(path: string, revalidate = DEFAULT_REVALIDATE_SECOND
   return (await response.json()) as T;
 }
 
+const emptyPaginatedPosts = (): PaginatedPosts => ({
+  data: [],
+  nextCursor: undefined,
+  prevCursor: undefined,
+});
+
 export const postQueryService = {
+  /** Same as getPosts, but returns an empty page when the API is unreachable (e.g. missing NEXT_PUBLIC_API_BASE_URL on serverless). */
+  async getPostsSafe(params: ListPostsParams = {}): Promise<PaginatedPosts> {
+    try {
+      return await this.getPosts(params);
+    } catch {
+      return emptyPaginatedPosts();
+    }
+  },
+
   async getPosts(params: ListPostsParams = {}): Promise<PaginatedPosts> {
     const limit = params.limit ?? 10;
 
@@ -126,5 +141,14 @@ export const postQueryService = {
       nextCursor,
       prevCursor: undefined,
     };
+  },
+
+  /** Same as getPostsByTag, but returns an empty page on failure. */
+  async getPostsByTagSafe(params: ListPostsByTagParams): Promise<PaginatedPosts> {
+    try {
+      return await this.getPostsByTag(params);
+    } catch {
+      return emptyPaginatedPosts();
+    }
   },
 };

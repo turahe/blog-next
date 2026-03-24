@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 export const revalidate = 300;
 
 export default async function TagsPage() {
-  const tags = await tagQueryService.getTags(500);
+  const tags = await tagQueryService.getTagsSafe(500);
 
   return (
     <main className="mx-auto w-full max-w-4xl flex-1 px-4 py-12 sm:px-6">
