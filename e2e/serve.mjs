@@ -20,6 +20,10 @@ const server = http.createServer((req, res) => {
       sendJson(res, 200, { code: 200, message: "ok", data: [] });
       return;
     }
+    if (req.method === "GET" && u.pathname === "/api/v1/tags") {
+      sendJson(res, 200, { code: 200, message: "ok", data: [] });
+      return;
+    }
     res.writeHead(404);
     res.end();
   } catch {
