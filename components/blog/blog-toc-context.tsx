@@ -5,7 +5,6 @@ import {
   useCallback,
   useContext,
   useEffect,
-  useRef,
   useState,
   type ReactNode,
 } from "react";
@@ -31,12 +30,10 @@ export function useBlogToc(): BlogTocContextValue {
 
 function useBlogTocActiveId(headings: BlogTocHeading[]): BlogTocContextValue {
   const [activeId, setActiveId] = useState<string | null>(() => headings[0]?.id ?? null);
-  const headingsRef = useRef(headings);
-  headingsRef.current = headings;
 
   /* Deep link: #heading-id */
   useEffect(() => {
-    const list = headingsRef.current;
+    const list = headings;
     if (list.length === 0 || typeof window === "undefined") return;
     const hash = window.location.hash.slice(1);
     if (!hash || !list.some((h) => h.id === hash)) return;
@@ -52,11 +49,8 @@ function useBlogTocActiveId(headings: BlogTocHeading[]): BlogTocContextValue {
   }, [headings]);
 
   useEffect(() => {
-    const list = headingsRef.current;
-    if (list.length === 0) {
-      setActiveId(null);
-      return;
-    }
+    const list = headings;
+    if (list.length === 0) return;
 
     const computeActive = () => {
       let current = list[0]!.id;
@@ -99,7 +93,9 @@ function useBlogTocActiveId(headings: BlogTocHeading[]): BlogTocContextValue {
     options?.onDone?.();
   }, []);
 
-  return { activeId, scrollToHeading };
+  const resolvedActiveId = headings.length === 0 ? null : activeId;
+
+  return { activeId: resolvedActiveId, scrollToHeading };
 }
 
 export function BlogTocProvider({

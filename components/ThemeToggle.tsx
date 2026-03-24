@@ -7,7 +7,7 @@ import useSound from "use-sound";
 
 function ThemeSwitch() {
   const [mounted, setMounted] = useState(false);
-  const { theme, setTheme, resolvedTheme } = useTheme();
+  const { setTheme, resolvedTheme } = useTheme();
 
   useEffect(() => {
     queueMicrotask(() => {
