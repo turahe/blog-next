@@ -83,7 +83,8 @@ jobs:
         run: npm ci
 
       - name: Require .vercel/project.json
-        run: test -f .vercel/project.json || (echo 'Add .vercel/project.json: run npx vercel link, then commit .vercel/project.json' && exit 1)
+        run: |
+          test -f .vercel/project.json || { echo "Add .vercel/project.json (npx vercel link, then commit)"; exit 1; }
 
       - name: Install Vercel CLI
         run: npm install -g vercel@latest
@@ -117,7 +118,8 @@ jobs:
         run: npm ci
 
       - name: Require .vercel/project.json
-        run: test -f .vercel/project.json || (echo 'Add .vercel/project.json: run npx vercel link, then commit .vercel/project.json' && exit 1)
+        run: |
+          test -f .vercel/project.json || { echo "Add .vercel/project.json (npx vercel link, then commit)"; exit 1; }
 
       - name: Install Vercel CLI
         run: npm install -g vercel@latest
