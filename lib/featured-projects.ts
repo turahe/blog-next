@@ -18,9 +18,8 @@ export const featuredProjects: FeaturedProject[] = [
     href: "/posts",
     tech: ["Next.js", "TypeScript", "Tailwind"],
     gradient: "violet",
-    imageSrc:
-      "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=1200&q=80",
-    imageAlt: "Code editor on a monitor — product engineering",
+    imageSrc: "/images/featured-go-blog.svg",
+    imageAlt: "Abstract gradient — product engineering",
   },
   {
     title: "Engineering Notes",
@@ -29,9 +28,8 @@ export const featuredProjects: FeaturedProject[] = [
     href: "/posts",
     tech: ["MDX", "React", "Vercel"],
     gradient: "emerald",
-    imageSrc:
-      "https://images.unsplash.com/photo-1455399411563-4023049a0fa5?auto=format&fit=crop&w=1200&q=80",
-    imageAlt: "Notebook and laptop — writing and deep work",
+    imageSrc: "/images/featured-notes.svg",
+    imageAlt: "Abstract gradient — writing and deep work",
   },
   {
     title: "Open Source",
@@ -40,8 +38,7 @@ export const featuredProjects: FeaturedProject[] = [
     href: "https://github.com/turahe",
     tech: ["Go", "Node", "GitHub Actions"],
     gradient: "sky",
-    imageSrc:
-      "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=1200&q=80",
-    imageAlt: "Developers collaborating at a shared screen",
+    imageSrc: "/images/featured-opensource.svg",
+    imageAlt: "Abstract gradient — collaboration",
   },
 ];
