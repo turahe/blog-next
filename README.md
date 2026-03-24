@@ -46,6 +46,7 @@ If you use **nvm** or **fnm**, run `nvm use` / `fnm use` — the repo pins **Nod
 | `npm run test:watch` | Unit tests in watch mode |
 | `npm run test:e2e` | E2E tests (Playwright; starts mock API + `next dev` — see below) |
 | `npm run test:e2e:ui` | Playwright UI mode |
+| `npm run deploy:vercel` | Deploy with [Vercel CLI](https://vercel.com/docs/cli) (`npx vercel@latest`) |
 
 ### Tests
 
@@ -73,6 +74,8 @@ Pre-commit runs **`npm run lint`** and **`npm test`**. To skip a hook in an emer
 
 Add **`SNYK_TOKEN`** in the repository’s **Settings → Secrets and variables → Actions** (token from [Snyk](https://snyk.io) account settings).
 
+**Vercel (optional):** To enable the **`deploy-preview`** and **`deploy-production`** jobs in [`.github/workflows/ci.yml`](.github/workflows/ci.yml), add a single [repository secret](https://docs.github.com/en/actions/security-guides/using-secrets-in-github-actions) **`VERCEL_TOKEN`** from [Vercel → Account → Tokens](https://vercel.com/account/tokens). The workflow also needs **`.vercel/project.json`** in the repo (not secret): run **`npx vercel link`** once locally, then **commit** `.vercel/project.json` (see `.gitignore` — only that file is tracked; the rest of `.vercel/` stays ignored). **Preview** deploys run on pushes to **`dev`** and on **pull requests** from the same repo; **production** deploys on pushes to **`main`**. If you also connect the repo in the Vercel dashboard, turn off duplicate automatic deployments there or rely on Actions only.
+
 ## Internationalization (EN / ID)
 
 - UI copy lives in **`lib/i18n/messages/en.ts`** and **`lib/i18n/messages/id.ts`** (same keys).
@@ -94,13 +97,43 @@ Copy and SEO defaults for the marketing shell live in **`lib/site-metadata.ts`**
 
 The app expects a backend compatible with the API shape used in `lib/` / client calls (OpenAPI spec in-repo: `swagger.json`). Point `NEXT_PUBLIC_API_BASE_URL` at your running server.
 
-## Deploy
+## Deploy on Vercel
 
-Deploy like any Next.js app — e.g. [Vercel](https://vercel.com) or your host of choice. Set env vars in the hosting dashboard before going live.
+[Vercel](https://vercel.com) is the natural host for Next.js. Deploy from Git (recommended) or from the CLI.
+
+### Git integration (recommended)
+
+1. Push this repository to GitHub (or GitLab / Bitbucket supported by Vercel).
+2. Sign in at [vercel.com](https://vercel.com) → **Add New…** → **Project** → import the repo.
+3. Leave **Framework Preset** as **Next.js** and defaults for **Build Command** (`next build`) and **Output** (handled by Next).
+4. **Node.js:** `package.json` sets `"engines": { "node": ">=25.0.0" }`. In the project **Settings → General → Node.js Version**, pick a version that satisfies that (or the latest available that matches your needs).
+5. **Environment variables** — **Settings → Environment Variables**. Add at least:
+
+   | Name | Example / notes |
+   |------|------------------|
+   | `NEXT_PUBLIC_API_BASE_URL` | Public HTTPS API base, e.g. `https://api.example.com/api/v1` (must be reachable from Vercel’s servers for SSR) |
+   | `NEXT_PUBLIC_SITE_URL` | Your site URL, e.g. `https://<project>.vercel.app` or your custom domain |
+   | `NEXT_PUBLIC_CONTACT_EMAIL` | Optional |
+
+   Apply them to **Production** and **Preview** as needed, then redeploy.
+
+6. **Deploy.** Pushes to the connected branch create **Preview** deployments; assign **Production** to `main` (or your default branch) under **Settings → Git**.
+
+`.gitignore` ignores everything under `.vercel/` except **`.vercel/project.json`**, which you should commit after linking so CI can deploy with only **`VERCEL_TOKEN`**.
+
+### CLI (optional)
+
+```bash
+npx vercel@latest        # link project, preview deploy
+npx vercel@latest --prod # production deploy after linking
+```
+
+Or use **`npm run deploy:vercel`** (same as `npx vercel@latest`).
 
 ## Docs
 
 - [Next.js documentation](https://nextjs.org/docs)
+- [Vercel Next.js deployment](https://vercel.com/docs/frameworks/nextjs)
 
 ---
 
