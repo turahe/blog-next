@@ -5,6 +5,7 @@ import { cookies } from "next/headers";
 import { AppChrome } from "@/components/AppChrome";
 import { Providers } from "@/app/providers";
 import { LOCALE_COOKIE, resolveLocale } from "@/lib/i18n";
+import { getSiteUrl } from "@/lib/site-url";
 import { siteMetadata } from "@/lib/site-metadata";
 import "./globals.css";
 
@@ -18,7 +19,7 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+const siteUrl = getSiteUrl();
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),

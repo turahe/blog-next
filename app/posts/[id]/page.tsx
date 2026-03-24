@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { DeletePostButton } from "@/components/DeletePostButton";
 import { BlogArticlePage } from "@/components/blog/BlogArticlePage";
+import { getSiteUrl } from "@/lib/site-url";
 import { postExcerpt } from "@/lib/excerpt";
 import { preparePostArticleHtml, resolvePostCoverUrl } from "@/lib/blog-content";
 import { postQueryService } from "@/services/post.query";
@@ -46,7 +47,7 @@ export default async function PostDetailPage({ params }: PostDetailPageProps) {
   const { html: articleHtml, headings } = preparePostArticleHtml(post.content);
   const list = await postQueryService.getPosts({ limit: 16 });
   const relatedPosts = list.data.filter((p) => p.id !== post.id).slice(0, 3);
-  const siteBase = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ?? "";
+  const siteBase = getSiteUrl();
   const shareUrl = siteBase ? `${siteBase}${postPath}` : postPath;
   const coverImageUrl = resolvePostCoverUrl(post);
 
