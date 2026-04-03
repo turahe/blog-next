@@ -1,9 +1,12 @@
 import type { Metadata } from "next";
+import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
 import { BlogArticlePage } from "@/components/blog/BlogArticlePage";
 import { getSiteUrl } from "@/lib/site-url";
 import { postExcerpt } from "@/lib/excerpt";
 import { preparePostArticleHtml, resolvePostCoverUrl } from "@/lib/blog-content";
+import { getMessages, LOCALE_COOKIE, resolveLocale } from "@/lib/i18n";
+import { translate } from "@/lib/i18n/translate";
 import { postQueryService } from "@/services/post.query";
 import { tagQueryService } from "@/services/tag.query";
 
@@ -22,8 +25,11 @@ export async function generateMetadata({ params }: PostDetailPageProps): Promise
       description: postExcerpt(post.content, 160),
     };
   } catch {
+    const cookieStore = await cookies();
+    const locale = resolveLocale(cookieStore.get(LOCALE_COOKIE)?.value);
+    const messages = getMessages(locale);
     return {
-      title: "Post not found",
+      title: translate(messages as unknown as Record<string, unknown>, "posts.metaNotFound"),
     };
   }
 }
