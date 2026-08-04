@@ -46,3 +46,15 @@ Phase 7
 Phase 8
 [ ] Production deployment
 [ ] Monitoring
+
+Phase 9
+[ ] RBAC roles and permissions model
+[ ] RBAC server-side enforcement
+[ ] RBAC ownership checks
+[ ] RBAC frontend UX gates
+[ ] RBAC authorization tests
+[ ] BFF route handlers
+[ ] BFF session and token handling
+[ ] BFF authorization gates
+[ ] BFF backend proxy
+[ ] BFF tests
