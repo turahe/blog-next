@@ -57,13 +57,13 @@ export function HeroSection() {
             <motion.h1
               id="hero-heading"
               variants={h1Variants}
-              className="text-pretty text-4xl font-medium tracking-tight text-slate-900 sm:text-5xl md:text-[3.35rem] md:leading-[1.08] dark:text-slate-50"
+              className="type-display text-foreground"
             >
               {siteMetadata.author}
             </motion.h1>
             <motion.p
               variants={fadeInUp}
-              className="mt-5 max-w-xl text-lg font-normal text-slate-500 sm:text-xl dark:text-slate-400"
+              className="type-lead mt-5 max-w-xl text-muted-foreground"
             >
               {t("hero.jobTitle")}
             </motion.p>

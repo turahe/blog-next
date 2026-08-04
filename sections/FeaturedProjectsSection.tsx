@@ -15,7 +15,11 @@ import { useLocale } from "@/contexts/LocaleProvider";
 export function FeaturedProjectsSection() {
   const { t } = useLocale();
   return (
-    <section id="work" className="py-24 md:py-32" aria-labelledby="work-heading">
+    <section
+      id="work"
+      className="overflow-x-clip py-24 md:py-32"
+      aria-labelledby="work-heading"
+    >
       <div className="section-wrap">
         <motion.div
           className="max-w-xl"

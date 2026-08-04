@@ -26,6 +26,8 @@ export interface Post {
   bannerImageUrl?: string | null;
   coverImageUrl?: string | null;
   images?: Array<string | { url?: string }>;
+  /** When true, post must not be publicly reachable. */
+  draft?: boolean;
 }
 
 export interface PaginatedPosts {

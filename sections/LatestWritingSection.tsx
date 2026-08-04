@@ -31,7 +31,11 @@ export function LatestWritingSection({ posts, maxDisplay }: LatestWritingSection
   const slice = posts.slice(0, maxDisplay);
 
   return (
-    <section id="writing" className="py-24 md:py-32" aria-labelledby="writing-heading">
+    <section
+      id="writing"
+      className="overflow-x-clip py-24 md:py-32"
+      aria-labelledby="writing-heading"
+    >
       <div className="section-wrap">
         <motion.div
           className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between"
@@ -83,7 +87,7 @@ export function LatestWritingSection({ posts, maxDisplay }: LatestWritingSection
             return (
               <motion.li key={post.id} variants={staggerItem}>
                 <motion.article
-                  className="group -mx-4 rounded-2xl px-4 py-2 transition-colors hover:bg-slate-50/90 dark:hover:bg-slate-800/35"
+                  className="group rounded-2xl py-2 transition-colors hover:bg-muted/50"
                   whileHover={reduce ? undefined : { y: -3 }}
                   transition={{ type: "spring", stiffness: 380, damping: 26 }}
                 >

@@ -1,15 +1,18 @@
 import Link from "next/link";
+import { Container } from "@/components/layout/Container";
 
 interface ComingSoonPageProps {
   searchParams: Promise<{ section?: string }>;
 }
 
-export default async function ComingSoonPage({ searchParams }: ComingSoonPageProps) {
+export default async function ComingSoonPage({
+  searchParams,
+}: ComingSoonPageProps) {
   const { section } = await searchParams;
   const title = section?.trim() || "This page";
 
   return (
-    <main className="mx-auto w-full max-w-lg flex-1 px-4 py-20 sm:px-6">
+    <Container size="prose" className="max-w-lg py-20">
       <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
         {title}
       </h1>
@@ -22,6 +25,6 @@ export default async function ComingSoonPage({ searchParams }: ComingSoonPagePro
       >
         ← Back home
       </Link>
-    </main>
+    </Container>
   );
 }

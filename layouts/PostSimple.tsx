@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import Link from "next/link";
 
 import type { Post } from "@/types/post";
+import { Container } from "@/components/layout/Container";
 import { formatReadingTime } from "@/lib/reading-time";
 
 interface PostNav {
@@ -29,7 +30,7 @@ export function PostSimple({
   children,
 }: PostSimpleProps) {
   return (
-    <main className="mx-auto w-full max-w-3xl flex-1 px-4 py-10 sm:px-6">
+    <Container size="prose" className="py-10">
       <div className="mb-6">
         <Link
           href={backHref}
@@ -76,7 +77,7 @@ export function PostSimple({
           ) : null}
         </div>
       )}
-    </main>
+    </Container>
   );
 }
 

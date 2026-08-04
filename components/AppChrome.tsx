@@ -2,23 +2,21 @@
 
 import type { ReactNode } from "react";
 import { usePathname } from "next/navigation";
-import { SiteFooter } from "@/components/SiteFooter";
-import { SiteHeader } from "@/components/SiteHeader";
+import { PageShell } from "@/components/layout/PageShell";
+import { Header } from "@/components/layout/Header";
+import { Footer } from "@/components/layout/Footer";
 
 export function AppChrome({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const isAuthRoute = pathname.startsWith("/auth");
 
   if (isAuthRoute) {
-    return <>{children}</>;
+    return <PageShell bare>{children}</PageShell>;
   }
 
   return (
-    <>
-      <SiteHeader />
+    <PageShell header={<Header />} footer={<Footer />}>
       {children}
-      <SiteFooter />
-    </>
+    </PageShell>
   );
 }
-

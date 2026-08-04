@@ -14,13 +14,17 @@ import { useLocale } from "@/contexts/LocaleProvider";
 export function TechStackSection() {
   const { t } = useLocale();
   return (
-    <section id="skills" className="relative py-24 md:py-32" aria-labelledby="skills-heading">
+    <section
+      id="skills"
+      className="relative overflow-x-clip py-24 md:py-32"
+      aria-labelledby="skills-heading"
+    >
       <div
-        className="pointer-events-none absolute left-[max(-12%,-80px)] top-1/4 h-64 w-64 rounded-full bg-primary-500/[0.06] blur-3xl dark:bg-primary-400/[0.05]"
+        className="pointer-events-none absolute left-0 top-1/4 h-64 w-64 -translate-x-1/4 rounded-full bg-primary-500/[0.06] blur-3xl dark:bg-primary-400/[0.05]"
         aria-hidden
       />
       <div
-        className="pointer-events-none absolute bottom-10 right-[-40px] h-48 w-48 text-primary-500/15 dark:text-primary-400/10"
+        className="pointer-events-none absolute right-0 bottom-10 h-48 w-48 translate-x-1/4 text-primary-500/15 dark:text-primary-400/10"
         aria-hidden
       >
         <svg viewBox="0 0 200 200" fill="none" className="h-full w-full" xmlns="http://www.w3.org/2000/svg">

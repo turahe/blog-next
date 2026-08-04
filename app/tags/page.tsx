@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Container } from "@/components/layout/Container";
 import { TagChip } from "@/components/TagChip";
 import { tagQueryService } from "@/services/tag.query";
 
@@ -13,7 +14,7 @@ export default async function TagsPage() {
   const tags = await tagQueryService.getTagsSafe(500);
 
   return (
-    <main className="mx-auto w-full max-w-4xl flex-1 px-4 py-12 sm:px-6">
+    <Container size="wide" className="py-12">
       <h1 className="text-4xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
         Tag Archive
       </h1>
@@ -25,9 +26,11 @@ export default async function TagsPage() {
         {tags.length ? (
           tags.map((tag) => <TagChip key={tag.id} tag={tag} />)
         ) : (
-          <p className="text-sm text-slate-500 dark:text-slate-400">No tags found.</p>
+          <p className="text-sm text-slate-500 dark:text-slate-400">
+            No tags found.
+          </p>
         )}
       </section>
-    </main>
+    </Container>
   );
 }

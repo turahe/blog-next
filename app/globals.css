@@ -1,51 +1,186 @@
-@import 'tailwindcss';
+@import "tailwindcss";
+@import "tw-animate-css";
 @plugin "@tailwindcss/forms";
-@plugin '@tailwindcss/typography';
+@plugin "@tailwindcss/typography";
 @custom-variant dark (&:where(.dark, .dark *));
 
+/*
+  Design tokens — DESIGN.md (Cinematic Engineering) mapped to shadcn/ui
+  (new-york · neutral). Prefer semantic utilities: bg-background, text-muted-foreground, etc.
+*/
+:root {
+  --radius: 0.625rem;
+
+  /* Light shell */
+  --background: #fafafa;
+  --foreground: #0a0a0a;
+  --card: #ffffff;
+  --card-foreground: #0a0a0a;
+  --popover: #ffffff;
+  --popover-foreground: #0a0a0a;
+  --primary: #0a0a0a;
+  --primary-foreground: #fafafa;
+  --secondary: #f4f4f5;
+  --secondary-foreground: #0a0a0a;
+  --muted: #f4f4f5;
+  --muted-foreground: #71717a;
+  --accent: #f4f4f5;
+  --accent-foreground: #0a0a0a;
+  --destructive: #dc2626;
+  --border: #e4e4e7;
+  --input: #e4e4e7;
+  --ring: #a1a1aa;
+  /* Alias for older call sites */
+  --surface: var(--card);
+
+  --ds-font-display: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --ds-font-body: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --ds-font-code: var(--font-geist-mono), ui-monospace, monospace;
+
+  /*
+    Editorial type scale — DESIGN.md §4
+    H1 72–120px · H2 48–72px · H3 28–40px · Body 18–20px · Small 14–16px
+  */
+  --ds-text-display-lg: clamp(2.75rem, 8vw + 1rem, 7.5rem);
+  --ds-text-display: clamp(2.25rem, 5vw + 0.5rem, 4.5rem);
+  --ds-text-heading-lg: clamp(1.75rem, 2.5vw + 0.5rem, 2.5rem);
+  --ds-text-heading: clamp(1.375rem, 1.5vw + 0.5rem, 1.75rem);
+  --ds-text-body-lg: clamp(1.125rem, 0.4vw + 1rem, 1.25rem);
+  --ds-text-body: clamp(1.0625rem, 0.2vw + 1rem, 1.125rem);
+  --ds-text-small: clamp(0.875rem, 0.2vw + 0.8rem, 1rem);
+
+  --ds-leading-display: 1.05;
+  --ds-leading-heading: 1.15;
+  --ds-leading-body: 1.65;
+  --ds-tracking-display: -0.03em;
+  --ds-tracking-heading: -0.02em;
+
+  --container-content: 80rem;
+  --container-article: 46rem;
+  --page-padding-inline: 1.5rem;
+}
+
+@media (min-width: 640px) {
+  :root {
+    --page-padding-inline: 2rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --page-padding-inline: 3rem;
+  }
+}
+
+html.dark {
+  /* Cinematic dark — DESIGN.md §3 */
+  --background: #0a0a0a;
+  --foreground: #f5f5f5;
+  --card: #111111;
+  --card-foreground: #f5f5f5;
+  --popover: #111111;
+  --popover-foreground: #f5f5f5;
+  --primary: #ffffff;
+  --primary-foreground: #0a0a0a;
+  --secondary: #18181b;
+  --secondary-foreground: #f5f5f5;
+  --muted: #18181b;
+  --muted-foreground: #a1a1aa;
+  --accent: #18181b;
+  --accent-foreground: #f5f5f5;
+  --destructive: #ef4444;
+  --border: #27272a;
+  --input: #27272a;
+  --ring: #a1a1aa;
+  --surface: var(--card);
+}
+
 /* Core theme configuration */
-@theme {
-  /* Font families — Geist from next/font (see layout.tsx --font-geist-sans) */
-  --font-sans:
-    var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-    'Segoe UI Symbol', 'Noto Color Emoji';
+@theme inline {
+  --font-sans: var(--ds-font-body);
+  --font-mono: var(--ds-font-code);
+  --font-display: var(--ds-font-display);
 
-  /* Colors */
-  /* Copied from https://tailwindcss.com/docs/theme#default-theme-variable-reference */
-  --color-primary-50: oklch(0.971 0.014 343.198);
-  --color-primary-100: oklch(0.948 0.028 342.258);
-  --color-primary-200: oklch(0.899 0.061 343.231);
-  --color-primary-300: oklch(0.823 0.12 346.018);
-  --color-primary-400: oklch(0.718 0.202 349.761);
-  --color-primary-500: oklch(0.656 0.241 354.308);
-  --color-primary-600: oklch(0.592 0.249 0.584);
-  --color-primary-700: oklch(0.525 0.223 3.958);
-  --color-primary-800: oklch(0.459 0.187 3.815);
-  --color-primary-900: oklch(0.408 0.153 2.432);
-  --color-primary-950: oklch(0.284 0.109 3.907);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-surface: var(--surface);
 
-  --color-gray-50: oklch(0.985 0.002 247.839);
-  --color-gray-100: oklch(0.967 0.003 264.542);
-  --color-gray-200: oklch(0.928 0.006 264.531);
-  --color-gray-300: oklch(0.872 0.01 258.338);
-  --color-gray-400: oklch(0.707 0.022 261.325);
-  --color-gray-500: oklch(0.551 0.027 264.364);
-  --color-gray-600: oklch(0.446 0.03 256.802);
-  --color-gray-700: oklch(0.373 0.034 259.733);
-  --color-gray-800: oklch(0.278 0.033 256.848);
-  --color-gray-900: oklch(0.21 0.034 264.665);
-  --color-gray-950: oklch(0.13 0.028 261.692);
+  /* Neutral scale (legacy primary-* utilities) */
+  --color-primary-50: #fafafa;
+  --color-primary-100: #f4f4f5;
+  --color-primary-200: #e4e4e7;
+  --color-primary-300: #d4d4d8;
+  --color-primary-400: #a1a1aa;
+  --color-primary-500: #71717a;
+  --color-primary-600: #52525b;
+  --color-primary-700: #3f3f46;
+  --color-primary-800: #27272a;
+  --color-primary-900: #18181b;
+  --color-primary-950: #09090b;
 
-  /* Line heights */
+  --color-gray-50: #fafafa;
+  --color-gray-100: #f4f4f5;
+  --color-gray-200: #e4e4e7;
+  --color-gray-300: #d4d4d8;
+  --color-gray-400: #a1a1aa;
+  --color-gray-500: #71717a;
+  --color-gray-600: #52525b;
+  --color-gray-700: #3f3f46;
+  --color-gray-800: #27272a;
+  --color-gray-900: #18181b;
+  --color-gray-950: #09090b;
+
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+
+  --max-width-content: var(--container-content);
+  --max-width-article: var(--container-article);
+
+  --text-display-lg: var(--ds-text-display-lg);
+  --text-display: var(--ds-text-display);
+  --text-heading-lg: var(--ds-text-heading-lg);
+  --text-heading: var(--ds-text-heading);
+  --text-body-lg: var(--ds-text-body-lg);
+  --text-body: var(--ds-text-body);
+  --text-small: var(--ds-text-small);
+
+  --leading-display: var(--ds-leading-display);
+  --leading-heading: var(--ds-leading-heading);
+  --leading-body: var(--ds-leading-body);
+
+  --tracking-display: var(--ds-tracking-display);
+  --tracking-heading: var(--ds-tracking-heading);
+
   --line-height-11: 2.75rem;
   --line-height-12: 3rem;
   --line-height-13: 3.25rem;
   --line-height-14: 3.5rem;
 
-  /* Z-index values */
   --z-60: 60;
   --z-70: 70;
   --z-80: 80;
+
+  --ease-micro: cubic-bezier(0.2, 0, 0, 1);
+  --duration-micro: 200ms;
+  --duration-section: 600ms;
 }
 
 /*
@@ -62,18 +197,71 @@
   ::before,
   ::backdrop,
   ::file-selector-button {
-    border-color: var(--color-gray-200, currentColor);
+    border-color: var(--border);
+  }
+
+  * {
+    @apply border-border outline-ring/50;
   }
 
   html {
     color-scheme: light dark;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: clip;
   }
 
-  /* Light page shell — near-white, minimal + global noise (Stripe-style) */
   body.page-root {
     position: relative;
     isolation: isolate;
-    @apply min-h-full bg-white font-sans text-[15px] font-normal leading-normal text-slate-900 antialiased sm:text-base;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
+    min-height: 100%;
+    overflow-x: clip;
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: var(--ds-font-body);
+    font-size: var(--ds-text-body);
+    font-weight: 400;
+    line-height: var(--ds-leading-body);
+    -webkit-font-smoothing: antialiased;
+    overflow-wrap: break-word;
+  }
+
+  /* Sensible defaults for unstyled headings */
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--ds-font-display);
+    font-weight: 500;
+    text-wrap: balance;
+  }
+
+  h1 {
+    font-size: var(--ds-text-display);
+    line-height: var(--ds-leading-display);
+    letter-spacing: var(--ds-tracking-display);
+  }
+
+  h2 {
+    font-size: var(--ds-text-heading-lg);
+    line-height: var(--ds-leading-heading);
+    letter-spacing: var(--ds-tracking-heading);
+  }
+
+  h3 {
+    font-size: var(--ds-text-heading);
+    line-height: var(--ds-leading-heading);
+    letter-spacing: var(--ds-tracking-heading);
+  }
+
+  code,
+  kbd,
+  pre,
+  samp {
+    font-family: var(--ds-font-code);
   }
 
   body.page-root::before {
@@ -92,11 +280,6 @@
     z-index: 2;
   }
 
-  /* Dark: flat slate-900, no decorative wash */
-  html.dark body.page-root {
-    @apply bg-slate-900 text-slate-300;
-  }
-
   html.dark body.page-root::before {
     opacity: 0.045;
     mix-blend-mode: soft-light;
@@ -104,33 +287,112 @@
 
   a,
   button {
-    outline-color: var(--color-primary-500);
+    outline-color: var(--accent);
   }
 
   a:focus-visible,
   button:focus-visible {
     outline: 2px solid;
     border-radius: var(--radius-sm);
-    outline-color: var(--color-primary-500);
+    outline-color: var(--accent);
+    outline-offset: 2px;
   }
 }
 
 /* Portfolio: spacing & type rhythm (minimal hierarchy) */
 @layer components {
   .section-wrap {
-    @apply mx-auto w-full max-w-6xl px-5 sm:px-8 lg:px-12;
+    @apply mx-auto w-full max-w-content;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: min(100%, var(--container-content));
+    padding-inline: var(--page-padding-inline);
+    min-width: 0;
   }
 
   .section-label {
-    @apply text-[13px] font-normal tracking-normal text-slate-400 dark:text-slate-500;
+    color: var(--muted-foreground);
+    font-family: var(--ds-font-body);
+    font-size: var(--ds-text-small);
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
   }
 
   .section-title {
-    @apply text-2xl font-medium tracking-tight text-pretty text-slate-900 sm:text-[1.75rem] sm:leading-snug dark:text-slate-50;
+    color: var(--foreground);
+    font-family: var(--ds-font-display);
+    font-size: var(--ds-text-heading-lg);
+    font-weight: 500;
+    letter-spacing: var(--ds-tracking-heading);
+    line-height: var(--ds-leading-heading);
+    text-wrap: pretty;
   }
 
   .section-lead {
-    @apply mt-4 max-w-md text-pretty text-[0.9375rem] leading-[1.7] text-slate-500 dark:text-slate-400;
+    margin-top: 1rem;
+    max-width: 36rem;
+    color: var(--muted-foreground);
+    font-family: var(--ds-font-body);
+    font-size: var(--ds-text-body-lg);
+    line-height: var(--ds-leading-body);
+    text-wrap: pretty;
+  }
+
+  /* Utility aliases for one-off composition */
+  .type-display {
+    font-family: var(--ds-font-display);
+    font-size: var(--ds-text-display-lg);
+    font-weight: 500;
+    letter-spacing: var(--ds-tracking-display);
+    line-height: var(--ds-leading-display);
+    text-wrap: balance;
+    overflow-wrap: anywhere;
+  }
+
+  .type-h1 {
+    font-family: var(--ds-font-display);
+    font-size: var(--ds-text-display);
+    font-weight: 500;
+    letter-spacing: var(--ds-tracking-display);
+    line-height: var(--ds-leading-display);
+    text-wrap: balance;
+  }
+
+  .type-h2 {
+    font-family: var(--ds-font-display);
+    font-size: var(--ds-text-heading-lg);
+    font-weight: 500;
+    letter-spacing: var(--ds-tracking-heading);
+    line-height: var(--ds-leading-heading);
+    text-wrap: pretty;
+  }
+
+  .type-h3 {
+    font-family: var(--ds-font-display);
+    font-size: var(--ds-text-heading);
+    font-weight: 500;
+    letter-spacing: var(--ds-tracking-heading);
+    line-height: var(--ds-leading-heading);
+    text-wrap: pretty;
+  }
+
+  .type-body {
+    font-family: var(--ds-font-body);
+    font-size: var(--ds-text-body);
+    line-height: var(--ds-leading-body);
+  }
+
+  .type-lead {
+    font-family: var(--ds-font-body);
+    font-size: var(--ds-text-body-lg);
+    line-height: var(--ds-leading-body);
+  }
+
+  .type-small {
+    font-family: var(--ds-font-body);
+    font-size: var(--ds-text-small);
+    line-height: 1.5;
   }
 
   /* Blog: in-article links — growing underline, keeps focus on reading */
@@ -141,7 +403,7 @@
     background-position: 0 100%;
     background-repeat: no-repeat;
     background-size: 0% 1px;
-    transition: background-size 0.38s ease;
+    transition: background-size var(--duration-section) var(--ease-micro);
   }
 
   .blog-prose.prose :where(a):not(:where(pre, pre *)):hover {
@@ -169,8 +431,8 @@
     background-repeat: no-repeat;
     background-size: 0% 1px;
     transition:
-      background-size 0.35s ease,
-      color 0.2s ease;
+      background-size var(--duration-section) var(--ease-micro),
+      color var(--duration-micro) var(--ease-micro);
     padding-bottom: 2px;
   }
 
@@ -180,7 +442,7 @@
 
   @media (prefers-reduced-motion: reduce) {
     .blog-nav-link {
-      transition: color 0.2s ease;
+      transition: color var(--duration-micro) var(--ease-micro);
       background: none;
       text-decoration: underline;
       text-underline-offset: 3px;
@@ -195,12 +457,12 @@
 @layer utilities {
   .prose {
     & a {
-      color: var(--color-primary-500);
+      color: var(--color-primary-600);
       &:hover {
-        color: var(--color-primary-600);
+        color: var(--color-primary-700);
       }
       & code {
-        color: var(--color-primary-400);
+        color: var(--color-primary-500);
       }
     }
     & :where(h1, h2) {
@@ -211,18 +473,18 @@
       font-weight: 600;
     }
     & :where(code):not(pre code) {
-      color: var(--color-indigo-500);
+      color: var(--color-primary-700);
     }
   }
 
   .prose-invert {
     & a {
-      color: var(--color-primary-500);
+      color: var(--color-primary-300);
       &:hover {
-        color: var(--color-primary-400);
+        color: var(--color-primary-200);
       }
       & code {
-        color: var(--color-primary-400);
+        color: var(--color-primary-300);
       }
     }
     & :where(h1, h2, h3, h4, h5, h6) {
@@ -240,7 +502,7 @@
 }
 
 .footnotes {
-  @apply mt-12 border-t border-gray-200 pt-8 dark:border-gray-700;
+  @apply mt-12 border-t border-border pt-8;
 }
 
 .data-footnote-backref {
@@ -272,10 +534,23 @@ input:-webkit-autofill:focus {
   overflow: auto hidden;
 }
 
+.content-header {
+  position: relative;
+}
+
 .content-header-link {
+  position: absolute;
+  top: 0.15em;
+  left: 0;
   opacity: 0;
-  margin-left: -24px;
-  padding-right: 4px;
+  padding-right: 0.25rem;
+}
+
+/* Anchor icons: offset only when there is room so they don't force horizontal scroll. */
+@media (min-width: 48rem) {
+  .content-header-link {
+    transform: translateX(-1.5rem);
+  }
 }
 
 .content-header:hover .content-header-link,
@@ -301,5 +576,11 @@ input:-webkit-autofill:focus {
 @layer utilities {
   .animate-tilt {
     animation: tilt 8s ease-in-out infinite;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .animate-tilt {
+      animation: none;
+    }
   }
 }

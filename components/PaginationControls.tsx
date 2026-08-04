@@ -5,6 +5,9 @@ interface PaginationControlsProps {
   prevCursor?: string;
   pathname?: string;
   limit?: number;
+  previousLabel?: string;
+  nextLabel?: string;
+  statusLabel?: string;
 }
 
 export function PaginationControls({
@@ -12,7 +15,14 @@ export function PaginationControls({
   prevCursor,
   pathname = "/",
   limit = 10,
+  previousLabel = "← Previous",
+  nextLabel = "Next →",
+  statusLabel = "More posts",
 }: PaginationControlsProps) {
+  if (!nextCursor && !prevCursor) {
+    return null;
+  }
+
   const prevHref = prevCursor
     ? `${pathname}?cursor=${encodeURIComponent(prevCursor)}&dir=prev&limit=${limit}`
     : pathname;
@@ -21,30 +31,35 @@ export function PaginationControls({
     : pathname;
 
   return (
-    <div className="mt-8 flex items-center justify-between border-t border-slate-200 pt-6 dark:border-slate-800">
+    <nav
+      aria-label="Pagination"
+      className="mt-8 flex items-center justify-between border-t border-border pt-6"
+    >
       <Link
         href={prevHref}
         aria-disabled={!prevCursor}
-        className={`text-sm font-semibold transition ${
+        tabIndex={prevCursor ? undefined : -1}
+        className={
           !prevCursor
-            ? "pointer-events-none text-slate-300 dark:text-slate-700"
-            : "text-slate-700 hover:text-slate-900 dark:text-slate-300 dark:hover:text-slate-100"
-        }`}
+            ? "pointer-events-none text-small text-muted-foreground/40"
+            : "text-small font-medium text-foreground transition hover:text-primary"
+        }
       >
-        {"<- Previous"}
+        {previousLabel}
       </Link>
-      <span className="text-sm text-slate-500 dark:text-slate-400">More posts</span>
+      <span className="text-small text-muted-foreground">{statusLabel}</span>
       <Link
         href={nextHref}
         aria-disabled={!nextCursor}
-        className={`text-sm font-semibold transition ${
+        tabIndex={nextCursor ? undefined : -1}
+        className={
           !nextCursor
-            ? "pointer-events-none text-slate-300 dark:text-slate-700"
-            : "text-slate-700 hover:text-slate-900 dark:text-slate-300 dark:hover:text-slate-100"
-        }`}
+            ? "pointer-events-none text-small text-muted-foreground/40"
+            : "text-small font-medium text-foreground transition hover:text-primary"
+        }
       >
-        {"Next ->"}
+        {nextLabel}
       </Link>
-    </div>
+    </nav>
   );
 }

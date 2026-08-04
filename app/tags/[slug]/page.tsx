@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { Container } from "@/components/layout/Container";
 import { PaginationControls } from "@/components/PaginationControls";
 import { PostList } from "@/components/PostList";
 import { TagChip } from "@/components/TagChip";
@@ -39,7 +40,7 @@ export default async function TagPostsPage({ params, searchParams }: TagPostsPag
   });
 
   return (
-    <main className="mx-auto w-full max-w-4xl flex-1 px-4 py-12 sm:px-6">
+    <Container size="wide" className="py-12">
       <div className="mb-6">
         <Link
           href="/tags"
@@ -60,6 +61,6 @@ export default async function TagPostsPage({ params, searchParams }: TagPostsPag
 
       <PostList posts={result.data} />
       <PaginationControls nextCursor={result.nextCursor} pathname={`/tags/${tag.slug}`} />
-    </main>
+    </Container>
   );
 }

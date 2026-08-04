@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import Link from "next/link";
 
 import type { Post } from "@/types/post";
+import { Container } from "@/components/layout/Container";
 import { formatReadingTime } from "@/lib/reading-time";
 
 interface PostBannerProps {
@@ -22,7 +23,7 @@ export function PostBanner({
   children,
 }: PostBannerProps) {
   return (
-    <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-10 sm:px-6">
+    <Container size="content" className="py-10">
       <div className="mb-6">
         <Link
           href={backHref}
@@ -60,7 +61,7 @@ export function PostBanner({
           <div className="mt-8">{children}</div>
         </div>
       </article>
-    </main>
+    </Container>
   );
 }
 

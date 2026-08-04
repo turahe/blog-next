@@ -157,10 +157,7 @@ export default function DropMenu() {
               </MenuItem>
               <MenuItem>
                 {({ focus }) => (
-                  <Link
-                    href="/coming-soon?section=About"
-                    className={itemClass(focus)}
-                  >
+                  <Link href="/about" className={itemClass(focus)}>
                     <span className="flex flex-row items-center">
                       <PersonIcon className="mr-4 mt-0.5 shrink-0" aria-hidden />
                       {t("menu.about")}

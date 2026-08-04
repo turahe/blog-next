@@ -65,7 +65,7 @@ export function injectHeadingIds(html: string): { html: string; headings: BlogTo
   return { html: out, headings };
 }
 
-/** Plain / Markdown-lite: paragraphs split by blank lines; single-line ## / ### headings. */
+/** Plain / Markdown-lite: paragraphs, ## / ### headings, and fenced ``` code blocks. */
 export function plainToArticleHtml(raw: string): { html: string; headings: BlogTocHeading[] } {
   const headings: BlogTocHeading[] = [];
   const used = new Set<string>();
@@ -74,6 +74,17 @@ export function plainToArticleHtml(raw: string): { html: string; headings: BlogT
 
   for (const block of blocks) {
     const trimmed = block.trim();
+    const fence = /^```(\w*)\n?([\s\S]*?)```$/.exec(trimmed);
+    if (fence) {
+      const lang = fence[1]?.trim();
+      const code = fence[2].replace(/\n$/, "");
+      const langAttr = lang ? ` class="language-${escapeHtml(lang)}"` : "";
+      const dataLang = lang ? ` data-language="${escapeHtml(lang)}"` : "";
+      parts.push(
+        `<pre${dataLang}><code${langAttr}>${escapeHtml(code)}</code></pre>`,
+      );
+      continue;
+    }
     const h2 = /^##\s+(.+)$/.exec(trimmed);
     const h3 = /^###\s+(.+)$/.exec(trimmed);
     if (h2 && !trimmed.includes("\n")) {

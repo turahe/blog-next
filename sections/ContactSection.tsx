@@ -32,7 +32,11 @@ export function ContactSection() {
   );
 
   return (
-    <section id="contact" className="py-24 md:py-32" aria-labelledby="contact-heading">
+    <section
+      id="contact"
+      className="overflow-x-clip py-24 md:py-32"
+      aria-labelledby="contact-heading"
+    >
       <div className="section-wrap">
         <motion.div
           className="grid gap-12 lg:grid-cols-2 lg:items-start lg:gap-16"

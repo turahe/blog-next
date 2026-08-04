@@ -1,8 +1,13 @@
 import axios from "axios";
 import { getAccessTokenFromCookie } from "@/lib/auth-cookies";
 
+/**
+ * Browser-facing Axios client for interactive auth flows.
+ * Public content fetching must use the server client in `./client`.
+ */
 export const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:8080/api/v1",
+  baseURL:
+    process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:8080/api/v1",
   headers: {
     "Content-Type": "application/json",
   },

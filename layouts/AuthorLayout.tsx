@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { AuthBackLink } from "@/components/AuthBackLink";
+import { Container } from "@/components/layout/Container";
 
 import type { Tag } from "@/types/tag";
 
@@ -23,7 +24,7 @@ interface AuthorLayoutProps {
 
 export function AuthorLayout({ author, children }: AuthorLayoutProps) {
   return (
-    <main className="mx-auto w-full max-w-4xl flex-1 px-4 py-10 sm:px-6">
+    <Container size="wide" className="py-10">
       <div className="mb-8">
         <AuthBackLink variant="inline" />
       </div>
@@ -70,7 +71,7 @@ export function AuthorLayout({ author, children }: AuthorLayoutProps) {
           </div>
         ) : null}
       </section>
-    </main>
+    </Container>
   );
 }
 

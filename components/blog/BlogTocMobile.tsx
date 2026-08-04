@@ -8,9 +8,13 @@ import type { BlogTocHeading } from "@/lib/blog-content";
 
 type BlogTocMobileProps = {
   headings: BlogTocHeading[];
+  label?: string;
 };
 
-export function BlogTocMobile({ headings }: BlogTocMobileProps) {
+export function BlogTocMobile({
+  headings,
+  label = "On this page",
+}: BlogTocMobileProps) {
   const { activeId, scrollToHeading } = useBlogToc();
 
   if (headings.length === 0) return null;
@@ -22,11 +26,11 @@ export function BlogTocMobile({ headings }: BlogTocMobileProps) {
           <>
             <DisclosureButton
               className={clsx(
-                "flex w-full items-center justify-between gap-3 rounded-xl border border-slate-200 bg-slate-50/90 px-4 py-3 text-left text-sm font-medium text-slate-800 transition hover:bg-slate-100 dark:border-slate-700 dark:bg-slate-800/50 dark:text-slate-100 dark:hover:bg-slate-800",
-                open && "rounded-b-none border-b-0 dark:border-b-0",
+                "flex w-full items-center justify-between gap-3 rounded-xl border border-border bg-muted/40 px-4 py-3 text-left text-sm font-medium text-foreground transition hover:bg-muted/70",
+                open && "rounded-b-none border-b-0",
               )}
             >
-              <span>Table of contents</span>
+              <span>{label}</span>
               <ChevronDownIcon
                 className={clsx("h-4 w-4 shrink-0 text-slate-500 transition-transform motion-reduce:transition-none", open && "rotate-180")}
                 aria-hidden

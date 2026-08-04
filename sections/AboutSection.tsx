@@ -1,15 +1,28 @@
 "use client";
 
+import Image from "next/image";
+import Link from "next/link";
 import { motion } from "motion/react";
 import { useLocale } from "@/contexts/LocaleProvider";
-import { fadeInUp, premiumEase, revealViewport, staggerSection } from "@/lib/motion-variants";
+import { homeVisuals } from "@/lib/home-visuals";
+import {
+  fadeInUp,
+  premiumEase,
+  revealViewport,
+  staggerSection,
+} from "@/lib/motion-variants";
 import { siteMetadata } from "@/lib/site-metadata";
 
 export function AboutSection() {
   const { t } = useLocale();
+  const portraitSrc = homeVisuals.about.src;
 
   return (
-    <section id="about" className="py-24 md:py-32" aria-labelledby="about-heading">
+    <section
+      id="about"
+      className="relative overflow-x-clip py-24 md:py-32"
+      aria-labelledby="about-heading"
+    >
       <div className="section-wrap">
         <motion.div
           className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_min(100%,280px)] lg:items-start lg:gap-20"
@@ -41,7 +54,7 @@ export function AboutSection() {
             </div>
             <motion.div
               variants={fadeInUp}
-              className="mt-8 max-w-xl space-y-5 text-[0.9375rem] leading-[1.65] text-slate-600 sm:mt-10 dark:text-slate-400"
+              className="mt-8 max-w-xl space-y-5 type-lead text-muted-foreground sm:mt-10"
             >
               <p>
                 {t("about.p1", {
@@ -52,6 +65,14 @@ export function AboutSection() {
                 })}
               </p>
               <p>{t("about.p2")}</p>
+              <p>
+                <Link
+                  href="/about"
+                  className="font-medium text-foreground underline-offset-4 hover:underline focus-visible:rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                >
+                  {t("about.readMore")}
+                </Link>
+              </p>
             </motion.div>
           </div>
           <motion.div
@@ -65,11 +86,20 @@ export function AboutSection() {
               viewport={{ once: true }}
               transition={{ type: "spring", stiffness: 260, damping: 24 }}
             >
-              <div
-                className="pointer-events-none absolute -inset-3 rounded-[1.75rem] bg-gradient-to-br from-primary-500/20 via-transparent to-violet-500/15 blur-xl dark:from-primary-500/12 dark:to-violet-500/10"
-                aria-hidden
-              />
-              
+              <div className="relative max-w-64 overflow-x-clip">
+                <div
+                  className="pointer-events-none absolute inset-0 rounded-[1.75rem] bg-gradient-to-br from-primary-500/20 via-transparent to-violet-500/15 blur-xl dark:from-primary-500/12 dark:to-violet-500/10"
+                  aria-hidden
+                />
+                <Image
+                  src={portraitSrc}
+                  alt={t("about.profileAlt", { author: siteMetadata.author })}
+                  width={280}
+                  height={350}
+                  className="relative aspect-[4/5] w-full rounded-2xl border border-border bg-card object-cover"
+                  unoptimized={portraitSrc.endsWith(".svg")}
+                />
+              </div>
             </motion.div>
           </motion.div>
         </motion.div>

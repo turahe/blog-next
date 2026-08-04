@@ -3,15 +3,22 @@ import { RelatedPostCard } from "@/components/blog/RelatedPostCard";
 
 type RelatedPostsProps = {
   posts: Post[];
+  heading: string;
 };
 
-export function RelatedPosts({ posts }: RelatedPostsProps) {
+export function RelatedPosts({ posts, heading }: RelatedPostsProps) {
   if (!posts.length) return null;
 
   return (
-    <section className="not-prose mt-20 border-t border-slate-200 pt-16 dark:border-slate-800" aria-labelledby="related-heading">
-      <h2 id="related-heading" className="text-sm font-semibold uppercase tracking-[0.18em] text-slate-500 dark:text-slate-400">
-        Related posts
+    <section
+      className="not-prose mt-20 border-t border-border pt-16"
+      aria-labelledby="related-heading"
+    >
+      <h2
+        id="related-heading"
+        className="text-sm font-semibold tracking-[0.18em] text-muted-foreground uppercase"
+      >
+        {heading}
       </h2>
       <ul className="mt-8 grid list-none gap-6 p-0 sm:grid-cols-2 lg:grid-cols-3">
         {posts.map((post) => (

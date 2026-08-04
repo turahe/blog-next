@@ -3,6 +3,7 @@ import Link from "next/link";
 
 import type { Post } from "@/types/post";
 import type { Tag } from "@/types/tag";
+import { Container } from "@/components/layout/Container";
 import { TagChip } from "@/components/TagChip";
 
 interface PostNav {
@@ -30,7 +31,7 @@ export function PostLayout({
   children,
 }: PostLayoutProps) {
   return (
-    <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-10 sm:px-6">
+    <Container size="content" className="py-10">
       <div className="mb-6">
         <Link
           href={backHref}
@@ -86,7 +87,7 @@ export function PostLayout({
           </div>
         </aside>
       </div>
-    </main>
+    </Container>
   );
 }
 

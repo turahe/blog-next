@@ -12,18 +12,29 @@ type BlogSidebarProps = {
   tags: Tag[];
   shareUrl: string;
   shareTitle: string;
+  tocLabel: string;
+  shareLabel: string;
+  tagsLabel: string;
 };
 
-export function BlogSidebar({ headings, tags, shareUrl, shareTitle }: BlogSidebarProps) {
+export function BlogSidebar({
+  headings,
+  tags,
+  shareUrl,
+  shareTitle,
+  tocLabel,
+  shareLabel,
+  tagsLabel,
+}: BlogSidebarProps) {
   const { activeId, scrollToHeading } = useBlogToc();
 
   return (
     <aside className="hidden lg:block">
       <div className="sticky top-24 space-y-10">
         {headings.length > 0 ? (
-          <nav aria-label="Table of contents">
-            <h2 className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500 dark:text-slate-400">
-              On this page
+          <nav aria-label={tocLabel}>
+            <h2 className="text-xs font-semibold tracking-[0.18em] text-muted-foreground uppercase">
+              {tocLabel}
             </h2>
             <ul className="mt-4 space-y-1">
               {headings.map((h) => {
@@ -37,11 +48,11 @@ export function BlogSidebar({ headings, tags, shareUrl, shareTitle }: BlogSideba
                         scrollToHeading(h.id);
                       }}
                       className={clsx(
-                        "relative block border-l-2 border-transparent py-1.5 pl-3 text-sm transition-colors -ml-px",
+                        "relative -ml-px block border-l-2 border-transparent py-1.5 pl-3 text-sm transition-colors",
                         h.level === 3 && "pl-5",
                         active
-                          ? "border-primary-500 font-medium text-primary-700 dark:border-primary-400 dark:text-primary-300"
-                          : "text-slate-600 hover:border-slate-300 hover:text-slate-900 dark:text-slate-400 dark:hover:border-slate-600 dark:hover:text-slate-100",
+                          ? "border-primary font-medium text-primary"
+                          : "text-muted-foreground hover:border-border hover:text-foreground",
                       )}
                     >
                       {h.text}
@@ -54,8 +65,8 @@ export function BlogSidebar({ headings, tags, shareUrl, shareTitle }: BlogSideba
         ) : null}
 
         <div>
-          <h2 className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500 dark:text-slate-400">
-            Share
+          <h2 className="text-xs font-semibold tracking-[0.18em] text-muted-foreground uppercase">
+            {shareLabel}
           </h2>
           <div className="mt-3">
             <BlogShareButtons url={shareUrl} title={shareTitle} />
@@ -64,8 +75,8 @@ export function BlogSidebar({ headings, tags, shareUrl, shareTitle }: BlogSideba
 
         {tags.length > 0 ? (
           <div>
-            <h2 className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500 dark:text-slate-400">
-              Tags
+            <h2 className="text-xs font-semibold tracking-[0.18em] text-muted-foreground uppercase">
+              {tagsLabel}
             </h2>
             <div className="mt-3 flex flex-wrap gap-2">
               {tags.map((tag) => (

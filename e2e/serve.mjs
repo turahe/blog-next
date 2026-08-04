@@ -47,6 +47,7 @@ server.listen(E2E_PORT, "127.0.0.1", () => {
     shell: true,
     env: {
       ...process.env,
+      API_BASE_URL: API_BASE,
       NEXT_PUBLIC_API_BASE_URL: API_BASE,
     },
   });

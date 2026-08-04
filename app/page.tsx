@@ -10,19 +10,24 @@ export const revalidate = 60;
 
 const MAX_DISPLAY = 5;
 
+/**
+ * Homepage storytelling order (PRD §4.1), footer via PageShell:
+ * Hero → Introduction → Selected projects → Expertise → Articles → Contact
+ * Scroll World (Phase 6) enhances the hero later without replacing this HTML.
+ */
 export default async function Home() {
   const { data: posts } = await postQueryService.getPostsSafe({
     limit: Math.max(10, MAX_DISPLAY),
   });
 
   return (
-    <div className="flex-1">
+    <>
       <HeroSection />
-      <TechStackSection />
-      <FeaturedProjectsSection />
       <AboutSection />
-      <ContactSection />
+      <FeaturedProjectsSection />
+      <TechStackSection />
       <LatestWritingSection posts={posts} maxDisplay={MAX_DISPLAY} />
-    </div>
+      <ContactSection />
+    </>
   );
 }
